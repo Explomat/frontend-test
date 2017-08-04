@@ -2,6 +2,7 @@ import Component from '../Component';
 import { addEventListener } from '../../store/calendarStore';
 import { getState, addEvent } from '../../actions/calendarActions';
 import CalendarCell from '../calendar-cell';
+import ShortEvent from '../short-event';
 import './calendar.styl';
 
 function updateState(st) {
@@ -83,11 +84,12 @@ class Calendar extends Component {
 
 	render(){
 		const { isFetching, isDisplayShortEvent, curDate } = this.state;
-		if (isFetching){
+		/*if (isFetching){
 			return `<div id=${this.id} class='overlay-loading overlay-loading--show' />`;
-		}
+		}*/
 		return (
 			`<div id=${this.id}>
+				${isFetching ? '<div class=\'overlay-loading overlay-loading--show\' />' : ''}
 				<div class='calendar__header'>
 					<div class='calendar__buttons'>
 						<button
@@ -105,7 +107,7 @@ class Calendar extends Component {
 							Обновить
 						</button>
 					</div>
-					${isDisplayShortEvent ? `<div>${isDisplayShortEvent}</div>` : ''}
+					${isDisplayShortEvent ? `${new ShortEvent()}` : ''}
 				</div>
 				<div class='calendar__body'>
 					<div class='menu'>

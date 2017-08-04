@@ -11,17 +11,10 @@ class ShortEvent extends Component {
 		domNode.addEventListener('click', this.handleClick.bind(this));
 	}
 
-	handleClick(){
-		this.setState({
-			error: this.id
-		});
-	}
-
 	render(){
-		const { date } = this.props;
 		return (
 			`<div id=${this.id} class='short-event'>
-				${date.toLocaleDateString()}
+				
 			</div>`
 		);
 	}
