@@ -1,11 +1,16 @@
 class Component {
 	constructor(props){
 		this.props = props || {};
+		this.state = {};
 		this.id = Component.id++;
 	}
 
-	setState(){
-		
+	setState(nextState){
+		this.state = nextState;
+		const domNode = document.getElementById(this.id);
+		if (domNode){
+			domNode.outerHTML = this.render();
+		}
 	}
 }
 
@@ -19,6 +24,9 @@ Component.prototype.toString = function toString() {
 			this.componentDidMount();
 		}
 	}, 0);
+	if (this.componentWillMount){
+		this.componentWillMount();
+	}
 	return this.render();
 };
 

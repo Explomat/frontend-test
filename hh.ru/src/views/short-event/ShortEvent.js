@@ -1,7 +1,7 @@
 import Component from '../Component';
-import './calendar-cell.styl';
+import './short-event.styl';
 
-class CalendarCell extends Component {
+class ShortEvent extends Component {
 	componentDidMount(){
 		this.initEventHandles();
 	}
@@ -20,11 +20,11 @@ class CalendarCell extends Component {
 	render(){
 		const { date } = this.props;
 		return (
-			`<div id=${this.id} class='calendar-cell'>
+			`<div id=${this.id} class='short-event'>
 				${date.toLocaleDateString()}
 			</div>`
 		);
 	}
 }
 
-export default CalendarCell;
+export default ShortEvent;
