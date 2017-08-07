@@ -29,17 +29,18 @@ class Calendar extends Component {
 		getState();
 	}
 
-	componentDidMount(){
-		this.initEventHandles();
-	}
-
-	initEventHandles(){
+	addEventListeners(){
 		const addEventButton = document.getElementById(`${this.id}__add_event`);
 		if (addEventButton){
 			addEventButton.addEventListener('click', this.handleToggleDisplayShortEvent);
 		}
-		/*const domNode = document.getElementById(`${this.id}`);
-		console.log(domNode);*/
+	}
+
+	removeEventListeners(){
+		const addEventButton = document.getElementById(`${this.id}__add_event`);
+		if (addEventButton){
+			addEventButton.removeEventListener('click', this.handleToggleDisplayShortEvent);
+		}
 	}
 
 	handleToggleDisplayShortEvent(){
@@ -53,6 +54,7 @@ class Calendar extends Component {
 	}
 
 	renderCells(date){
+		let cellsIter = 0;
 		const lastMonthDayInPrevMonth = new Date(date.getFullYear(), date.getMonth(), 0);
 		const startWeekDayInPrevMonth = new Date(date.getFullYear(), date.getMonth(), -lastMonthDayInPrevMonth.getDay() + 1);
 		const diffPrevDays = lastMonthDayInPrevMonth.getDate() - startWeekDayInPrevMonth.getDate() + 1;
@@ -62,11 +64,11 @@ class Calendar extends Component {
 
 		const curDate = startWeekDayInPrevMonth;
 		for (let i = 0; i < diffPrevDays; i++) {
-			cells.push(new CalendarCell({ date: new Date(curDate) }));
+			cells.push(new CalendarCell({ key: `${this.id}_${cellsIter++}`, date: new Date(curDate) }));
 			curDate.setDate(curDate.getDate() + 1);
 		}
 		for (let i = diffPrevDays; i < 7; i++) {
-			cells.push(new CalendarCell({ date: new Date(curDate) }));
+			cells.push(new CalendarCell({ key: `${this.id}_${cellsIter++}`, date: new Date(curDate) }));
 			curDate.setDate(curDate.getDate() + 1);
 		}
 		rows.push(`<div class='calendar__row clearfix'>${cells.join('')}</div>`);
@@ -74,7 +76,7 @@ class Calendar extends Component {
 		for (let i = 1; i < 6; i++) {
 			cells = [];
 			for (let j = 0; j < 7; j++) {
-				cells.push(new CalendarCell({ date: new Date(curDate) }));
+				cells.push(new CalendarCell({ key: `${this.id}_${cellsIter++}`, date: new Date(curDate) }));
 				curDate.setDate(curDate.getDate() + 1);
 			}
 			rows.push(`<div class='calendar__row clearfix'>${cells.join('')}</div>`);
@@ -84,13 +86,11 @@ class Calendar extends Component {
 
 	render(){
 		const { isFetching, isDisplayShortEvent, curDate } = this.state;
-		/*if (isFetching){
-			return `<div id=${this.id} class='overlay-loading overlay-loading--show' />`;
-		}*/
 		return (
 			`<div id=${this.id}>
-				${isFetching ? '<div class=\'overlay-loading overlay-loading--show\' />' : ''}
+				${isFetching ? '<div class=\'overlay-loading overlay-loading--show\'></div>' : ''}
 				<div class='calendar__header'>
+					<div class='calendar__valign'></div>
 					<div class='calendar__buttons'>
 						<button
 							id=${this.id}__add_event
@@ -106,8 +106,8 @@ class Calendar extends Component {
 						>
 							Обновить
 						</button>
+						${isDisplayShortEvent ? `${new ShortEvent()}` : ''}
 					</div>
-					${isDisplayShortEvent ? `${new ShortEvent()}` : ''}
 				</div>
 				<div class='calendar__body'>
 					<div class='menu'>

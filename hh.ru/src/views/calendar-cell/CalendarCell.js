@@ -2,18 +2,32 @@ import Component from '../Component';
 import './calendar-cell.styl';
 
 class CalendarCell extends Component {
-	componentDidMount(){
-		this.initEventHandles();
+
+	constructor(props){
+		super(props);
+
+		this.state = {
+			iter: 0
+		};
+
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	initEventHandles(){
+	addEventListeners(){
 		const domNode = document.getElementById(`${this.id}`);
-		domNode.addEventListener('click', this.handleClick.bind(this));
+		domNode.addEventListener('click', this.handleClick);
+	}
+
+	removeEventListeners(){
+		const domNode = document.getElementById(`${this.id}`);
+		if (domNode){
+			domNode.removeEventListener('click', this.handleClick);
+		}
 	}
 
 	handleClick(){
 		this.setState({
-			error: this.id
+			iter: this.state.iter + 1
 		});
 	}
 
@@ -22,6 +36,7 @@ class CalendarCell extends Component {
 		return (
 			`<div id=${this.id} class='calendar-cell'>
 				${date.toLocaleDateString()}
+				<strong>${this.state.iter}</strong>
 			</div>`
 		);
 	}
