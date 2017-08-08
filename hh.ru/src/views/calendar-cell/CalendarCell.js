@@ -6,16 +6,14 @@ class CalendarCell extends Component {
 	constructor(props){
 		super(props);
 
-		this.state = {
-			iter: 0
-		};
-
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	addEventListeners(){
 		const domNode = document.getElementById(`${this.id}`);
-		domNode.addEventListener('click', this.handleClick);
+		if (domNode){
+			domNode.addEventListener('click', this.handleClick);
+		}
 	}
 
 	removeEventListeners(){
@@ -25,18 +23,19 @@ class CalendarCell extends Component {
 		}
 	}
 
-	handleClick(){
-		this.setState({
-			iter: this.state.iter + 1
-		});
+	handleClick(e){
+		if (this.props.onClick){
+			this.props.onClick(e, this);
+		}
 	}
 
 	render(){
-		const { date } = this.props;
+		const { isCurDate, isCurMonth, title } = this.props;
+		const classes = isCurDate ? 'calendar-cell--cur-date' : '';
+		const titleClasses = !isCurMonth ? 'calendar-cell__title--not-cur-date' : '';
 		return (
-			`<div id=${this.id} class='calendar-cell'>
-				${date.toLocaleDateString()}
-				<strong>${this.state.iter}</strong>
+			`<div id=${this.id} class='calendar-cell ${classes}'>
+				<span class='calendar-cell__title ${titleClasses}'>${title}</span>
 			</div>`
 		);
 	}

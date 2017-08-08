@@ -2,5 +2,25 @@
 	float: left;
     height: 100px;
     width: 14.2%;
-    text-align: center;
+    text-align: left;
+    padding: 8px;
+    border-right: 1px solid #ddd;
+    font-size: 12px;
+    
+    &:last-child {
+		border-right: none;
+	}
+	
+	&--cur-date {
+		background-color: #f3f3f3;
+		font-weight: 700;
+    	font-size: 13px;
+	}
+	
+	&__title {
+		word-break: break-all;
+		&--not-cur-date {
+			color: #ccc;
+		}
+	}
 }

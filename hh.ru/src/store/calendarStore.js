@@ -31,6 +31,24 @@ register(function calendarStore(action){
 			emit('update', state);
 			break;
 		}
+		case constants.CALENDAR_SET_PREV_MONTH: {
+			const { curDate } = state;
+			state = {
+				...state,
+				curDate: new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate())
+			};
+			emit('update', state);
+			break;
+		}
+		case constants.CALENDAR_SET_NEXT_MONTH: {
+			const { curDate } = state;
+			state = {
+				...state,
+				curDate: new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate())
+			};
+			emit('update', state);
+			break;
+		}
 		default:
 			return;
 	}

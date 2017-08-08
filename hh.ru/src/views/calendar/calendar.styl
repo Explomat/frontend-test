@@ -2,8 +2,8 @@
 
 .calendar {
 	&__header{
-		padding: 16px 32px;
-		height: 130px;
+		padding: 28px 32px;
+		height: 100px;
 		background-color: #f3f3f3;
 		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
 		
@@ -13,7 +13,23 @@
 		}
 	}
 	&__body{
-		padding: 15px;
+		padding: 15px 56px;
+		
+		.calendar__menu {
+			padding-bottom: 15px;
+		}
+
+		.calendar__cells{
+			.calendar__row{
+				border-top: 1px solid #ddd;
+				border-left: 1px solid #ddd;
+				border-right: 1px solid #ddd;
+				
+				&:last-child {
+					border-bottom: 1px solid #ddd;
+				}
+			}
+		}
 	}
 	
 	&__buttons {
@@ -42,5 +58,14 @@
 			}
 		}
 	}
-	
+	&__event {
+		position: absolute;
+        visibility: hidden;
+        left: -10000px;
+		
+		&--display {
+			position: initial;
+			visibility: visible;
+		}
+	}
 }

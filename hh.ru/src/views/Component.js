@@ -5,12 +5,20 @@ class Component {
 	constructor(props){
 		this.props = props || {};
 		this.state = {};
-		this.id = Component.id++;
+		this.id = this.props.id || Component.id++;
 	}
 
 	componentDidMount(){
 		if (this.addEventListeners){
 			this.addEventListeners();
+		}
+		if (this.removeEventListeners){
+			const domNode = document.getElementById(this.id);
+			if (domNode){
+				domNode.addEventListener('DOMNodeRemoved', () => {
+					this.removeEventListeners();
+				}, false);
+			}
 		}
 	}
 

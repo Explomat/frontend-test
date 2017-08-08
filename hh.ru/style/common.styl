@@ -4,6 +4,7 @@
     padding: 0;
     border: none;
     width: 100%;
+    color: #444;
 }
 
 body {
@@ -121,6 +122,9 @@ body {
         cursor: pointer;
         opacity: .5;
     }
+    &:before {
+        content: '\2A2F';
+    }
     &.close-button--modal {
         padding: 4px;
     }
@@ -165,8 +169,8 @@ body {
 .form-control {
     display: block;
     width: 100%;
-    min-height: 34px;
-    padding: 6px 12px;
+    min-height: 30px;
+    padding: 4px 12px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;

@@ -14,3 +14,15 @@ export function getState(){
 		});
 	}, 300);
 }
+
+export function prevMonth(){
+	dispatch({
+		type: constants.CALENDAR_SET_PREV_MONTH
+	});
+}
+
+export function nextMonth(){
+	dispatch({
+		type: constants.CALENDAR_SET_NEXT_MONTH
+	});
+}
