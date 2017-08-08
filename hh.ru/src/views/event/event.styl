@@ -1,7 +1,13 @@
 .event {
 	position: absolute;
-	top: 100%;
-	margin-top: 20px;
+    visibility: hidden;
+    left: -10000px;
+
+	&--display {
+		visibility: visible;
+		top: 100%;
+		left: auto;
+	}
 	
 	&__pointer {
 		width: 16px;

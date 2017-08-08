@@ -26,8 +26,9 @@ class Calendar extends Component {
 
 		this.handleAddEvent = this.handleAddEvent.bind(this);
 		this.handleToggleDisplayShortEvent = this.handleToggleDisplayShortEvent.bind(this);
-		this.handleToggleDisplayEvent = this.handleToggleDisplayEvent.bind(this);
-		this.handleClickOutside = this.handleClickOutside.bind(this);
+		this.handleDisplayEvent = this.handleDisplayEvent.bind(this);
+		this.handleHideEvent = this.handleHideEvent.bind(this);
+		//this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
 	componentWillMount(){
@@ -36,8 +37,6 @@ class Calendar extends Component {
 	}
 
 	addEventListeners(){
-		document.addEventListener('click', this.handleClickOutside, true);
-
 		const addEventButton = document.getElementById(`${this.id}__add_event`);
 		if (addEventButton){
 			addEventButton.addEventListener('click', this.handleToggleDisplayShortEvent);
@@ -52,6 +51,8 @@ class Calendar extends Component {
 		if (nextMonthButton){
 			nextMonthButton.addEventListener('click', nextMonth);
 		}
+
+		//document.addEventListener('click', this.handleClickOutside, true);
 	}
 
 	removeEventListeners(){
@@ -63,13 +64,21 @@ class Calendar extends Component {
 
 	handleToggleDisplayShortEvent(){
 		this.setState({
-			isDisplayShortEvent: !this.state.isDisplayShortEvent
+			isDisplayShortEvent: !this.state.isDisplayShortEvent,
+			isDisplayEvent: false
 		});
 	}
 
-	handleToggleDisplayEvent(nativeEvent){
+	handleHideEvent(){
 		this.setState({
-			isDisplayEvent: !this.state.isDisplayEvent,
+			isDisplayEvent: false
+		});
+	}
+
+	handleDisplayEvent(nativeEvent){
+		this.setState({
+			isDisplayEvent: true,
+			isDisplayShortEvent: false,
 			curEvent: {
 				nativeEvent
 			}
@@ -80,21 +89,23 @@ class Calendar extends Component {
 		addEvent();
 	}
 
-	handleClickOutside(e){
+	/*handleClickOutside(e){
 		const shortEventNode = document.getElementById(`${this.id}__short-event`);
-		if (shortEventNode && !shortEventNode.contains(e.target)){
+		const { isDisplayShortEvent, isDisplayEvent } = this.state;
+
+		if (shortEventNode && !shortEventNode.contains(e.target) && isDisplayShortEvent){
 			this.setState({
 				isDisplayShortEvent: false
 			});
 		}
 
 		const eventNode = document.getElementById(`${this.id}__event`);
-		if (eventNode && !eventNode.contains(e.target)){
+		if (eventNode && !eventNode.contains(e.target) && isDisplayEvent){
 			this.setState({
 				isDisplayEvent: false
 			});
 		}
-	}
+	}*/
 
 	renderCells(date){
 		let cellsIter = 0;
@@ -119,7 +130,7 @@ class Calendar extends Component {
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				isCurDate: equalDates(dateNow, curDate),
 				date: new Date(curDate),
-				onClick: this.handleToggleDisplayEvent
+				onClick: this.handleDisplayEvent
 			}));
 			curDate.setDate(curDate.getDate() + 1);
 		}
@@ -130,7 +141,7 @@ class Calendar extends Component {
 				date: new Date(curDate),
 				isCurMonth: true,
 				isCurDate: equalDates(dateNow, curDate),
-				onClick: this.handleToggleDisplayEvent
+				onClick: this.handleDisplayEvent
 			}));
 			curDate.setDate(curDate.getDate() + 1);
 		}
@@ -146,7 +157,7 @@ class Calendar extends Component {
 					date: new Date(curDate),
 					isCurDate: equalDates(dateNow, curDate),
 					isCurMonth: curDate <= lastDayInCurMonth,
-					onClick: this.handleToggleDisplayEvent
+					onClick: this.handleDisplayEvent
 				}));
 				curDate.setDate(curDate.getDate() + 1);
 			}
@@ -164,8 +175,6 @@ class Calendar extends Component {
 			curEvent
 		} = this.state;
 
-		//всегда нужно рендерить, иначе перед позиционированием не сможем найти по id (это вам не React :) )
-		const eventClasses = isDisplayEvent ? 'calendar__event--display' : '';
 		return (
 			`<div id=${this.id} class='calendar'>
 				${isFetching ? '<div class=\'overlay-loading overlay-loading--show\'></div>' : ''}
@@ -205,12 +214,12 @@ class Calendar extends Component {
 						${this.renderCells(curDate)}
 					</div>
 				</div>
-				<div class='calendar__event ${eventClasses}'>
-					${new Event({
-						id: `${this.id}__event`,
-						...curEvent
-					})}
-				</div>
+				${new Event({
+					id: `${this.id}__event`,
+					isDisplay: isDisplayEvent,
+					onClose: this.handleHideEvent,
+					...curEvent
+				})}
 			</div>`
 		);
 	}

@@ -21,7 +21,6 @@ class ShortEvent extends Component {
 	render(){
 		return (
 			`<div id=${this.id} class='short-event'>
-				<span class='short-event__pointer'></span>
 				<div class='short-event__content'>
 					<div class='short-event__header'>
 						<span id='${this.id}__close' class='close-button'></span>

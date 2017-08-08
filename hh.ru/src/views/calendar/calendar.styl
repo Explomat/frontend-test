@@ -7,10 +7,15 @@
 		background-color: #f3f3f3;
 		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
 		
-		.calendar__valign{
+		&:before {
+			display: inline-block;
+			content: "";
+		}
+
+		/*.calendar__valign{
 			display: inline-block;
 			height: 100%;
-		}
+		}*/
 	}
 	&__body{
 		padding: 15px 56px;
@@ -56,16 +61,6 @@
 				border-color: darken($primary-color, 30%);
 				box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 			}
-		}
-	}
-	&__event {
-		position: absolute;
-        visibility: hidden;
-        left: -10000px;
-		
-		&--display {
-			position: initial;
-			visibility: visible;
 		}
 	}
 }
