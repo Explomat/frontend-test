@@ -23,7 +23,7 @@ class Event extends Component {
 		}
 	}
 
-	getPosition(){
+	getPositionAndPointers(){
 		const { nativeEvent } = this.props;
 		if (nativeEvent){
 			const domNode = document.getElementById(`${this.id}__content`);
@@ -39,12 +39,13 @@ class Event extends Component {
 			const bottomDiff = bodyRect.bottom - elementRect.bottom;
 			return {
 				top: bottomDiff > elementRect.top ?
-					elementRect.top + document.body.scrollTop :
-					elementRect.bottom - thisHeight + document.body.scrollTop,
+					elementRect.top + document.body.scrollTop - 14 :
+					elementRect.bottom - thisHeight + document.body.scrollTop + 14,
 				left: elementRect.left > rightDiff ? elementRect.left - thisWidth - 14 : elementRect.right + 14,
-				topPointer: bottomDiff > elementRect.top ?
-					24 : thisHeight - 24,
-				leftPointer: elementRect.left > rightDiff ? thisWidth - 7 : -7
+				isTopLeft: bottomDiff > elementRect.top && elementRect.left < rightDiff,
+				isTopRight: bottomDiff > elementRect.top && elementRect.left > rightDiff,
+				isBottomLeft: bottomDiff < elementRect.top && elementRect.left < rightDiff,
+				isBottomRight: bottomDiff < elementRect.top && elementRect.left > rightDiff
 			};
 		}
 		return {
@@ -54,12 +55,15 @@ class Event extends Component {
 	}
 
 	render(){
-		const pos = this.getPosition();
+		const { top, left, isTopLeft, isTopRight, isBottomLeft, isBottomRight } = this.getPositionAndPointers();
 		const classes = this.props.isDisplay ? 'event--display' : '';
 		return (
-			`<div id=${this.id} class='event ${classes}' style='top: ${pos.top}px; left: ${pos.left}px;'>
-				<span class='event__pointer' style='top: ${pos.topPointer}px; left: ${pos.leftPointer}px;'></span>
+			`<div id=${this.id} class='event ${classes}' style='top: ${top}px; left: ${left}px;'>
 				<div id='${this.id}__content' class='event__content'>
+					${isTopLeft ? '<span class=\'event__pointer event__pointer--top-left\'></span>' : ''}
+					${isTopRight ? '<span class=\'event__pointer event__pointer--top-right\'></span>' : ''}
+					${isBottomLeft ? '<span class=\'event__pointer event__pointer--bottom-left\'></span>' : ''}
+					${isBottomRight ? '<span class=\'event__pointer event__pointer--bottom-right\'></span>' : ''}
 					<div class='event__header'>
 						<span id='${this.id}__close' class='close-button'></span>
 					</div>

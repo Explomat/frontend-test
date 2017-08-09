@@ -9,15 +9,6 @@
 	    content: "";
 	    z-index: 1;
 	}
-
-	&:after {
-		top: -14px;
-	    right: auto;
-	    left: 10px;
-		border: 7px solid transparent;
-    	border-bottom-color: #fff;
-	}
-
 	&:before {
 		top: -16px;
 	    right: auto;
@@ -25,12 +16,22 @@
 		border: 8px solid transparent;
     	border-bottom-color: rgba(27,31,35,0.15);
 	}
+	
+	&:after {
+		top: -14px;
+	    right: auto;
+	    left: 10px;
+		border: 7px solid transparent;
+    	border-bottom-color: #fff;
+	}
+	
 	&__content {
 		position: absolute;
 	    z-index: 1;
 	    background-color: #fff;
 	    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
 	    min-width: 250px;
+	    border-radius: 4px;
 
 		.short-event__header {
 			padding: 4px;
