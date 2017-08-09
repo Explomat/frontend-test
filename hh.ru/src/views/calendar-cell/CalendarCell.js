@@ -6,6 +6,10 @@ class CalendarCell extends Component {
 	constructor(props){
 		super(props);
 
+		this.state = {
+			isSelected: false
+		};
+
 		this.handleClick = this.handleClick.bind(this);
 	}
 
@@ -23,15 +27,22 @@ class CalendarCell extends Component {
 		}
 	}
 
-	handleClick(e){
-		if (this.props.onClick){
+	handleClick(){
+		this.setState({
+			isSelected: true
+		});
+		/*if (this.props.onClick){
 			this.props.onClick(e, this);
-		}
+		}*/
 	}
 
 	render(){
+		const { isSelected } = this.state;
 		const { isCurDate, isCurMonth, title } = this.props;
-		const classes = isCurDate ? 'calendar-cell--cur-date' : '';
+
+		let classes = isCurDate ? 'calendar-cell--cur-date' : '';
+		classes += isSelected ? 'calendar-cell--selected' : '';
+
 		const titleClasses = !isCurMonth ? 'calendar-cell__title--not-cur-date' : '';
 		return (
 			`<div id=${this.id} class='calendar-cell ${classes}'>

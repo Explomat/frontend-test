@@ -12,14 +12,14 @@ class Component {
 		if (this.addEventListeners){
 			this.addEventListeners();
 		}
-		if (this.removeEventListeners){
+		/*if (this.removeEventListeners){
 			const domNode = document.getElementById(this.id);
 			if (domNode){
 				domNode.addEventListener('DOMNodeRemoved', () => {
 					this.removeEventListeners();
 				}, false);
 			}
-		}
+		}*/
 	}
 
 	setState(nextState){
