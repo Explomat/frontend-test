@@ -1,12 +1,9 @@
 export function tryDateParse(date){
-	if (date === null){
-		return '';
-	}
 	const _date = Date.parse(date);
 	if (!isNaN(_date)){
-		return new Date(_date);
+		return date;
 	}
-	return '';
+	return null;
 }
 
 export function getMonthName(date){
@@ -57,4 +54,17 @@ export function equalDates(fDate, sDate){
 		(_fDate.getMonth() === _sDate.getMonth()) &&
 		(_fDate.getDate() === _sDate.getDate())
 	);
+}
+
+export function dateToString(date){
+	const d = tryDateParse(date);
+	const options = {
+		year: 'numeric',
+		month: '2-digit',
+		day: 'numeric'
+	};
+	if (d){
+		return d.toLocaleString('ru', options);
+	}
+	return '';
 }

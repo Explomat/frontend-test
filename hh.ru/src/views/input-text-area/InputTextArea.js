@@ -1,36 +1,39 @@
 import Component from '../Component';
+import Element from '../Element';
+import tags from '../tags';
 import './input-text-area.styl';
 
-class InputTextArea extends Component {
+export class InputTextArea extends Component {
 
 	constructor(props){
 		super(props);
 
-		this.props = {
-			value: '',
-			placeholder: 'Введите значение',
-			...props
-		};
-		//this.handleClick = this.handleClick.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
-	addEventListeners(){
-		/*const domNode = document.getElementById(`${this.id}`);
-		domNode.addEventListener('click', this.handleClick);*/
+	handleChange(e){
+		if (this.props.onChange){
+			this.props.onChange(e.target.value);
+		}
 	}
 
 	render(){
-		const { value, placeholder } = this.props;
+		const { value, placeholder, className } = this.props;
 		return (
-			`<textarea
-				id=${this.id}
-				placeholder='${placeholder}'
-				class='input-text-area'
-			>
-				${value}
-			</textarea>`
+			tags.textarea({
+				placeholder,
+				class: `input-text-area form-control ${className}`,
+				onChange: this.handleChange
+			}, value)
 		);
 	}
 }
 
-export default InputTextArea;
+InputTextArea.defaultProps = {
+	value: '',
+	placeholder: 'Введите значение',
+	className: ''
+};
+
+const InputTextAreaElement = Element.createFactory(InputTextArea);
+export default InputTextAreaElement;

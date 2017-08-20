@@ -1,7 +1,9 @@
 import createRemoteActions from './utils/createRemoteActions';
 
 const remoteConstants = createRemoteActions([
-	'CALENDAR_GET_STATE'
+	'CALENDAR_GET_STATE',
+	'CALENDAR_SAVE_EVENT',
+	'CALENDAR_DELETE_EVENT'
 ]);
 
 const constants = {

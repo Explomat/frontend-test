@@ -1,31 +1,14 @@
 import Component from '../Component';
+import Element from '../Element';
+import tags from '../tags';
 import './input-text.styl';
 
-class InputText extends Component {
+export class InputText extends Component {
 
 	constructor(props){
 		super(props);
-
-		this.props = {
-			value: (props || {}).value || '',
-			placeholder: 'Введите значение',
-			...props
-		};
 		this.handleChange = this.handleChange.bind(this);
-	}
-
-	addEventListeners(){
-		const domNode = document.getElementById(`${this.id}`);
-		if (domNode){
-			domNode.addEventListener('change', this.handleChange);
-		}
-	}
-
-	removeEventListeners(){
-		const domNode = document.getElementById(`${this.id}`);
-		if (domNode){
-			domNode.removeEventListener('change', this.handleChange);
-		}
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	handleChange(e){
@@ -34,17 +17,32 @@ class InputText extends Component {
 		}
 	}
 
+	handleKeyDown(e){
+		if (this.props.onKeyDown){
+			this.props.onKeyDown(e);
+		}
+	}
+
 	render(){
-		const { value, placeholder } = this.props;
+		const { value, placeholder, className } = this.props;
 		return (
-			`<input
-				id=${this.id}
-				type='input'
-				placeholder='${placeholder}'
-				value='${value}'
-				class='input-text' />`
+			tags.input({
+				type: 'input',
+				placeholder,
+				value,
+				class: `input-text form-control ${className}`,
+				onChange: this.handleChange,
+				onKeyDown: this.handleKeyDown
+			})
 		);
 	}
 }
 
-export default InputText;
+InputText.defaultProps = {
+	value: '',
+	placeholder: 'Введите значение',
+	className: ''
+};
+
+const InputTextElement = Element.createFactory(InputText);
+export default InputTextElement;

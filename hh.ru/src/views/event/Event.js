@@ -1,38 +1,94 @@
 import Component from '../Component';
+import Element from '../Element';
 import InputText from '../input-text';
 import InputTextArea from '../input-text-area';
+import tags from '../tags';
 import './event.styl';
 
-class Event extends Component {
+export class Event extends Component {
 
 	constructor(props){
 		super(props);
+
+		this.handleChangeEvent = this.handleChangeEvent.bind(this);
+		this.handleChangeParticipants = this.handleChangeParticipants.bind(this);
+		this.handleChangeDescription = this.handleChangeDescription.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+
+		this.state = {
+			event: '',
+			participants: [],
+			description: ''
+		};
 	}
 
-	addEventListeners(){
-		const domNode = document.getElementById(`${this.id}__close`);
-		if (domNode){
-			domNode.addEventListener('click', this.props.onClose);
+	_resetState(){
+		this.state = {
+			event: '',
+			participants: [],
+			description: ''
+		};
+	}
+
+	handleChangeEvent(value){
+		/*this.setState({
+			event: value
+		});*/
+		this.state.event = value;
+	}
+
+	handleChangeParticipants(value){
+		/*this.setState({
+			participants: value.split(',')
+		});*/
+		this.state.participants = value.split(',');
+	}
+
+	handleChangeDescription(value){
+		/*this.setState({
+			description: value
+		});*/
+		this.state.description = value;
+	}
+
+	handleSave(){
+		if (this.props.onSave){
+			this.props.onSave({
+				event: this.props.event ?
+					this.props.event : this.state.event,
+				participants: this.props.participants.length > 0 ?
+					this.props.participants : this.state.participants,
+				description: this.props.description ?
+					this.props.description : this.state.description
+			}, this.props.date);
+			this._resetState();
 		}
 	}
 
-	removeEventListeners(){
-		const domNode = document.getElementById(`${this.id}__close`);
-		if (domNode){
-			domNode.removeEventListener('click', this.props.onClose);
+	handleDelete(){
+		if (this.props.onDelete){
+			this.props.onDelete(this.props.date);
+			this._resetState();
+		}
+	}
+
+	handleClose(){
+		if (this.props.onClose){
+			this._resetState();
+			this.props.onClose();
 		}
 	}
 
 	getPositionAndPointers(){
-		const { nativeEvent } = this.props;
-		if (nativeEvent){
+		const { elementRect } = this.props;
+		if (elementRect){
 			const domNode = document.getElementById(`${this.id}__content`);
 			const thisRect = domNode.getBoundingClientRect();
 			const thisWidth = thisRect.width;
 			const thisHeight = thisRect.height;
 
-			const element = nativeEvent.currentTarget || nativeEvent.target;
-			const elementRect = element.getBoundingClientRect();
 			const bodyRect = document.body.getBoundingClientRect();
 
 			const rightDiff = bodyRect.right - elementRect.right;
@@ -55,36 +111,89 @@ class Event extends Component {
 	}
 
 	render(){
+		const { event, participants, description } = this.props;
 		const { top, left, isTopLeft, isTopRight, isBottomLeft, isBottomRight } = this.getPositionAndPointers();
 		const classes = this.props.isDisplay ? 'event--display' : '';
 		return (
-			`<div id=${this.id} class='event ${classes}' style='top: ${top}px; left: ${left}px;'>
-				<div id='${this.id}__content' class='event__content'>
-					${isTopLeft ? '<span class=\'event__pointer event__pointer--top-left\'></span>' : ''}
-					${isTopRight ? '<span class=\'event__pointer event__pointer--top-right\'></span>' : ''}
-					${isBottomLeft ? '<span class=\'event__pointer event__pointer--bottom-left\'></span>' : ''}
-					${isBottomRight ? '<span class=\'event__pointer event__pointer--bottom-right\'></span>' : ''}
-					<div class='event__header'>
-						<span id='${this.id}__close' class='close-button'></span>
-					</div>
-					<div class='event__body'>
-						${new InputText({
-							placeholder: 'Событие'
-						})}
-						${new InputText({
-							placeholder: 'Участники'
-						})}
-						${new InputTextArea({
-							placeholder: 'Описание'
-						})}
-					</div>
-					<div class='event__footer'>
-						<button type='button' class='event__create-button'>Готово</button>
-					</div>
-				</div>
-			</div>`
+			tags.div({
+				class: `event ${classes}`,
+				style: `top: ${top}px; left: ${left}px;`
+			}, tags.div({
+				id: `${this.id}__content`,
+				class: 'event__content'
+			}, [
+				isTopLeft && tags.span({
+					class: 'event__pointer event__pointer--top-left'
+				}),
+				isTopRight && tags.span({
+					class: 'event__pointer event__pointer--top-right'
+				}),
+				isBottomLeft && tags.span({
+					class: 'event__pointer event__pointer--bottom-left'
+				}),
+				isBottomRight && tags.span({
+					class: 'event__pointer event__pointer--bottom-right'
+				}),
+				tags.div({
+					class: 'event__header'
+				}, tags.span({
+					class: 'close-button',
+					onClick: this.handleClose
+				})),
+				tags.div({
+					class: 'event__body'
+				}, [
+					event ?
+						tags.strong(null, event)
+						: InputText({
+							value: event,
+							placeholder: 'Событие',
+							onChange: this.handleChangeEvent
+						}
+					),
+					participants.length > 0 ?
+						tags.div(null, [tags.div(null, 'Участники'), tags.div(null, participants.join(','))])
+						: InputText({
+							value: participants.join(','),
+							placeholder: 'Участники',
+							onChange: this.handleChangeParticipants
+						}
+					),
+					description ?
+						tags.div(null, description)
+						: InputTextArea({
+							value: description,
+							placeholder: 'Описание',
+							className: 'event__description',
+							onChange: this.handleChangeDescription
+						}
+					)
+				]),
+				tags.div({
+					class: 'event__footer'
+				}, [
+					tags.button({
+						type: 'button',
+						class: 'event__create-button',
+						onClick: this.handleSave
+					}, 'Готово'),
+					tags.button({
+						type: 'button',
+						class: 'event__delete-button',
+						onClick: this.handleDelete
+					}, 'Удалить')
+				])
+			])
+			)
 		);
 	}
 }
 
-export default Event;
+Event.defaultProps = {
+	event: '',
+	participants: [],
+	description: ''
+};
+
+const EventElement = Element.createFactory(Event);
+export default EventElement;

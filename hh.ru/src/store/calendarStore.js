@@ -1,6 +1,7 @@
 import { subscribe, emit } from '../utils/eventEmmiter';
 import { register } from './dispatcher';
 import constants from '../constants';
+import { dateToString } from '../utils/date';
 
 let state = {
 	isFetching: false,
@@ -46,6 +47,22 @@ register(function calendarStore(action){
 				...state,
 				curDate: new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate())
 			};
+			emit('update', state);
+			break;
+		}
+		case constants.CALENDAR_SAVE_EVENT_SUCCESS: {
+			state = {
+				...state,
+				events: {
+					...state.events,
+					[dateToString(action.date)]: action.event
+				}
+			};
+			emit('update', state);
+			break;
+		}
+		case constants.CALENDAR_DELETE_EVENT_SUCCESS: {
+			delete state.events[dateToString(action.date)];
 			emit('update', state);
 			break;
 		}

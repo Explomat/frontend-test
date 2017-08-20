@@ -1,7 +1,9 @@
 import Component from '../Component';
+import Element from '../Element';
+import tags from '../tags';
 import './calendar-cell.styl';
 
-class CalendarCell extends Component {
+export class CalendarCell extends Component {
 
 	constructor(props){
 		super(props);
@@ -13,43 +15,53 @@ class CalendarCell extends Component {
 		this.handleClick = this.handleClick.bind(this);
 	}
 
-	addEventListeners(){
-		const domNode = document.getElementById(`${this.id}`);
-		if (domNode){
-			domNode.addEventListener('click', this.handleClick);
-		}
-	}
-
-	removeEventListeners(){
-		const domNode = document.getElementById(`${this.id}`);
-		if (domNode){
-			domNode.removeEventListener('click', this.handleClick);
-		}
-	}
-
 	handleClick(){
+		const rect = this.domNode.getBoundingClientRect();
 		this.setState({
 			isSelected: true
 		});
-		/*if (this.props.onClick){
-			this.props.onClick(e, this);
-		}*/
+		if (this.props.onClick){
+			this.props.onClick(rect, this.props.date);
+		}
 	}
 
 	render(){
 		const { isSelected } = this.state;
-		const { isCurDate, isCurMonth, title } = this.props;
+		const { isCurDate, isCurMonth, title, event } = this.props;
 
-		let classes = isCurDate ? 'calendar-cell--cur-date' : '';
-		classes += isSelected ? 'calendar-cell--selected' : '';
+		let classes = isCurDate ? 'calendar-cell--cur-date ' : '';
+		classes += isSelected ? 'calendar-cell--selected ' : '';
 
 		const titleClasses = !isCurMonth ? 'calendar-cell__title--not-cur-date' : '';
+		
 		return (
-			`<div id=${this.id} class='calendar-cell ${classes}'>
-				<span class='calendar-cell__title ${titleClasses}'>${title}</span>
-			</div>`
+			tags.div({
+				class: `calendar-cell ${classes}`,
+				onClick: this.handleClick
+			}, tags.div({
+				class: 'calendar-cell__content'
+			}, [
+				tags.div({
+					class: `calendar-cell__title ${titleClasses}`
+				}, title),
+				tags.div({
+					class: 'calendar-cell__event-title'
+				}, event.event),
+				tags.div({
+					class: 'calendar-cell__event-participants'
+				}, event.participants.join(', '))
+			]))
 		);
 	}
 }
 
-export default CalendarCell;
+CalendarCell.defaultProps = {
+	event: {
+		event: '',
+		participants: [],
+		description: ''
+	}
+};
+
+const CalendarCellElement = Element.createFactory(CalendarCell);
+export default CalendarCellElement;

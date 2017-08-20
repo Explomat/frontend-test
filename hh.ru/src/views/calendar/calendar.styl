@@ -1,6 +1,8 @@
 @import '../../../style/vars.styl';
 
 .calendar {
+	min-width: 450px;
+	
 	&__header{
 		padding: 28px 32px;
 		height: 100px;
@@ -23,26 +25,32 @@
 		.calendar__menu {
 			padding-bottom: 15px;
 		}
+		
 
-		.calendar__cells{
+		.calendar__rows{ 
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			
 			.calendar__row{
-				border-top: 1px solid #ddd;
-				border-left: 1px solid #ddd;
-				border-right: 1px solid #ddd;
+				border-bottom: 1px solid #ddd;
 				
 				&:last-child {
-					border-bottom: 1px solid #ddd;
+					border-bottom: none;
 				}
 			}
 		}
 	}
 	
 	&__buttons {
-		display: inline-block;
+		display: block;
 		vertical-align: bottom;
 		position: relative;
+		
+		& &--add {
+			margin-right: 12px;
+		}
 
-		&--add, &--refresh {
+		& &--add, & &--refresh {
 			display: inline-block;
 			width: auto;
 			cursor: pointer;
@@ -61,6 +69,10 @@
 				border-color: darken($primary-color, 30%);
 				box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 			}
+		}
+		
+		.calendar__search {
+			float: right;
 		}
 	}
 }

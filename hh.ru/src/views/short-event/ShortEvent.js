@@ -1,40 +1,36 @@
 import Component from '../Component';
+import Element from '../Element';
 import InputText from '../input-text';
+import tags from '../tags';
 import './short-event.styl';
 
-class ShortEvent extends Component {
-
-	addEventListeners(){
-		const domNode = document.getElementById(`${this.id}__close`);
-		if (domNode){
-			domNode.addEventListener('click', this.props.onClose);
-		}
-	}
-
-	removeEventListeners(){
-		const domNode = document.getElementById(`${this.id}__close`);
-		if (domNode){
-			domNode.removeEventListener('click', this.props.onClose);
-		}
-	}
-
+export class ShortEvent extends Component {
 	render(){
 		return (
-			`<div id=${this.id} class='short-event'>
-				<div class='short-event__content'>
-					<div class='short-event__header'>
-						<span id='${this.id}__close' class='close-button'></span>
-					</div>
-					<div class='short-event__body'>
-						${new InputText()}
-					</div>
-					<div class='short-event__footer'>
-						<button type='button' class='short-event__create-button'>Создать</button>
-					</div>
-				</div>
-			</div>`
+			tags.div({
+				class: 'short-event'
+			}, tags.div({
+				class: 'short-event__content'
+			}, [
+				tags.div({
+					class: 'short-event__header'
+				}, tags.span({
+					class: 'close-button',
+					onClick: this.props.onClose })
+				),
+				tags.div({
+					class: 'short-event__body'
+				}, InputText()),
+				tags.div({
+					class: 'short-event__footer'
+				}, tags.button({
+					type: 'button',
+					class: 'short-event__create-button'
+				}, 'Создать'))
+			]))
 		);
 	}
 }
 
-export default ShortEvent;
+const ShortEventElement = Element.createFactory(ShortEvent);
+export default ShortEventElement;

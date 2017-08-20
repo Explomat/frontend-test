@@ -1,6 +1,8 @@
 .calendar-cell{
+	cursor: pointer;
 	float: left;
     height: 100px;
+    line-height: 1rem;
     width: 14.2%;
     text-align: left;
     padding: 8px;
@@ -20,10 +22,18 @@
     	font-size: 13px;
 	}
 	
-	&__title {
-		word-break: break-all;
-		&--not-cur-date {
-			color: #ccc;
+	&__content {
+		word-break: break-word;
+	    overflow-y: hidden;
+	    height: 100%;
+	    font-size: 11px;
+	    
+		.calendar-cell__title {
+			font-size: 12px;
+			
+			&--not-cur-date {
+				color: #ccc;
+			}
 		}
 	}
 }

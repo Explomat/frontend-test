@@ -1,7 +1,8 @@
+import { render } from './views/render';
+import Calendar from './views/calendar';
+//import Test from './views/Test';
+
 import 'babel-polyfill';
 import '../style/common.styl';
 
-import Calendar from './views/calendar';
-
-const domNode = document.getElementById('app');
-domNode.innerHTML = new Calendar();
+render(Calendar(), document.getElementById('app'));
