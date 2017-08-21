@@ -82,7 +82,7 @@ export class Event extends Component {
 	}
 
 	getPositionAndPointers(){
-		const { elementRect } = this.props;
+		/*const { elementRect } = this.props;
 		if (elementRect){
 			const domNode = document.getElementById(`${this.id}__content`);
 			const thisRect = domNode.getBoundingClientRect();
@@ -103,7 +103,7 @@ export class Event extends Component {
 				isBottomLeft: bottomDiff < elementRect.top && elementRect.left < rightDiff,
 				isBottomRight: bottomDiff < elementRect.top && elementRect.left > rightDiff
 			};
-		}
+		}*/
 		return {
 			top: 0,
 			left: 0
@@ -119,7 +119,6 @@ export class Event extends Component {
 				class: `event ${classes}`,
 				style: `top: ${top}px; left: ${left}px;`
 			}, tags.div({
-				id: `${this.id}__content`,
 				class: 'event__content'
 			}, [
 				isTopLeft && tags.span({
@@ -148,6 +147,7 @@ export class Event extends Component {
 						: InputText({
 							value: event,
 							placeholder: 'Событие',
+							focus: true,
 							onChange: this.handleChangeEvent
 						}
 					),

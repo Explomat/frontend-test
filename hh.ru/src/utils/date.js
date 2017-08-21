@@ -58,13 +58,18 @@ export function equalDates(fDate, sDate){
 
 export function dateToString(date){
 	const d = tryDateParse(date);
-	const options = {
+	/*const options = {
 		year: 'numeric',
 		month: '2-digit',
 		day: 'numeric'
-	};
+	};*/
 	if (d){
-		return d.toLocaleString('ru', options);
+		return (
+			d.getFullYear() + '.' +
+			d.getMonth() + '.' +
+			d.getDate()
+		);
+		//return d.toLocaleString('ru', options);
 	}
 	return '';
 }

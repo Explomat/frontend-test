@@ -8,7 +8,6 @@ export class InputText extends Component {
 	constructor(props){
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
-		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	handleChange(e){
@@ -17,22 +16,18 @@ export class InputText extends Component {
 		}
 	}
 
-	handleKeyDown(e){
-		if (this.props.onKeyDown){
-			this.props.onKeyDown(e);
-		}
-	}
-
 	render(){
 		const { value, placeholder, className } = this.props;
 		return (
 			tags.input({
-				type: 'input',
+				type: 'text',
 				placeholder,
 				value,
 				class: `input-text form-control ${className}`,
 				onChange: this.handleChange,
-				onKeyDown: this.handleKeyDown
+				onKeyDown: this.props.onKeyDown,
+				onKeyUp: this.props.onKeyUp,
+				onBlur: this.props.onBlur
 			})
 		);
 	}

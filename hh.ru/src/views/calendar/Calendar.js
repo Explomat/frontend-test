@@ -5,7 +5,8 @@ import {
 	prevMonth,
 	nextMonth,
 	saveEvent,
-	deleteEvent
+	deleteEvent,
+	searchEvents
 } from '../../actions/calendarActions';
 import CalendarCell from '../calendar-cell';
 import ShortEvent from '../short-event';
@@ -43,6 +44,8 @@ export class Calendar extends Component {
 		this.handleHideEvent = this.handleHideEvent.bind(this);
 		this.handleSaveEvent = this.handleSaveEvent.bind(this);
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
+		this.handleSearchEvents = this.handleSearchEvents.bind(this);
+		this.handleSelectEvent = this.handleSelectEvent.bind(this);
 		//this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
@@ -94,6 +97,14 @@ export class Calendar extends Component {
 			isDisplayEvent: false
 		});
 		deleteEvent(date);
+	}
+
+	handleSearchEvents(val){
+		searchEvents(val);
+	}
+
+	handleSelectEvent(){
+
 	}
 
 	/*handleClickOutside(e){
@@ -189,7 +200,8 @@ export class Calendar extends Component {
 			isDisplayShortEvent,
 			isDisplayEvent,
 			curDate,
-			curEvent
+			curEvent,
+			foundEvents
 		} = this.state;
 
 		if (isFetching){
@@ -199,7 +211,8 @@ export class Calendar extends Component {
 		}
 		
 		return tags.div({
-			class: 'calendar'
+			class: 'calendar',
+			ref: 'test'
 		}, [
 			tags.div({
 				class: 'calendar__header'
@@ -223,7 +236,15 @@ export class Calendar extends Component {
 						onClose: this.handleToggleDisplayShortEvent
 					}),
 					InputSearch({
-						className: 'calendar__search'
+						className: 'calendar__search',
+						items: foundEvents.map(fe => {
+							return {
+								...fe,
+								title: fe.event
+							};
+						}),
+						onSearch: this.handleSearchEvents,
+						onSelect: this.handleSelectEvent
 					})
 				])
 			]),

@@ -10,7 +10,7 @@ export function getState(){
 			state: {
 				curDate: new Date(),
 				events: {
-					'1.08.2017': {
+					'2017.7.1': {
 						event: 'test',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
@@ -45,5 +45,12 @@ export function deleteEvent(date){
 	dispatch({
 		type: constants.CALENDAR_DELETE_EVENT_SUCCESS,
 		date
+	});
+}
+
+export function searchEvents(value){
+	dispatch({
+		type: constants.CALENDAR_SEARCH_EVENTS_SUCCESS,
+		value
 	});
 }

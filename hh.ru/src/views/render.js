@@ -5,6 +5,7 @@ const EXCLUDED_PROPS = {
 };
 let rootDomNode = null;
 const nodes = {};
+//let curComponent = null;
 
 export function update(id){
 	const obj = nodes[id];
@@ -22,7 +23,8 @@ export function render({ type, props, parent, id }, container) {
 }
 
 function _renderTree({ type, props, parent, id }, domNode) {
-	const elId = id ? id.toString().substr(id.length - 1) : '0';
+	const elId = id !== undefined ?
+		id.toString()[(id.toString().length - 1)] : '0';
 	const newId = parent ? `${parent.id}.${elId}` : '0';
 
 	const obj = {
@@ -42,6 +44,7 @@ function _renderTree({ type, props, parent, id }, domNode) {
 			Component.id = newId;
 		}
 
+		//curComponent = Component;
 		obj.props = props;
 		obj.instance = Component;
 		nodes[newId] = obj;
@@ -70,10 +73,15 @@ function _renderTree({ type, props, parent, id }, domNode) {
 		return obj;
 	} else if (typeof type === 'string') {
 		obj.domNode = document.createElement(type);
-		//obj.domNode.setAttribute('id', newId);
+		obj.domNode.setAttribute('id', newId);
 
 		if (props){
 			obj.props = Object.assign({}, props);
+
+			/*if (props.ref && curComponent){
+				curComponent.refs = curComponent.refs || {};
+				curComponent.refs[props.ref] = obj.domNode;
+			}*/
 
 			for (const p in props){
 				if (props.hasOwnProperty(p)){
@@ -89,24 +97,23 @@ function _renderTree({ type, props, parent, id }, domNode) {
 			if (props.children) {
 				if (Array.isArray(props.children)){
 					for (let i = 0, len = props.children.length; i < len; i++) {
-						if (props.children[i]){
-							const child = {
-								type: props.children[i].type,
-								props: props.children[i].props,
+						const ch = props.children[i];
+						if (ch){
+							_renderTree({
+								type: ch.type,
+								props: ch.props,
 								parent: obj,
 								id: i
-							};
-							_renderTree(child, obj.domNode);
+							}, obj.domNode);
 						}
 					}
 				} else if (typeof props.children === 'object'){
-					const child = {
+					_renderTree({
 						type: props.children.type,
 						props: props.children.props,
 						parent: obj,
 						id: '0'
-					};
-					_renderTree(child, obj.domNode);
+					}, obj.domNode);
 				} else {
 					obj.domNode.textContent = props.children.toString();
 				}
