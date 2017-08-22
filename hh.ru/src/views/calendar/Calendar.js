@@ -211,8 +211,7 @@ export class Calendar extends Component {
 		}
 		
 		return tags.div({
-			class: 'calendar',
-			ref: 'test'
+			class: 'calendar'
 		}, [
 			tags.div({
 				class: 'calendar__header'
@@ -262,7 +261,6 @@ export class Calendar extends Component {
 						class: 'menu__cur-date'
 					}, `${getMonthName(curDate)} ${curDate.getFullYear()}`),
 					tags.span({
-						class: 'menu__next-month',
 						onClick: nextMonth
 					}, 'next')
 				]),
