@@ -18,12 +18,16 @@ export class InputSearch extends Component {
 		};
 
 		this.handleKeyUp = this.handleKeyUp.bind(this);
-		this.handleBlur = this.handleBlur.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
+		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
-	handleKeyUp(e){
-		this.state.value = e.target.value;
+	componentDidMount(){
+		document.addEventListener('click', this.handleClickOutside);
+	}
+
+	_onSearch(value, cb){
 		if (this.props.onSearch){
 			this.prevTime = Date.now();
 
@@ -31,8 +35,10 @@ export class InputSearch extends Component {
 			this.timeout = setTimeout(
 				() => {
 					if ((Date.now() - this.prevTime) >= TIMEOUT){
-						this.props.onSearch(e.target.value);
-						e.target.focus();
+						this.props.onSearch(value);
+						if (cb){
+							cb();
+						}
 					}
 				},
 				TIMEOUT
@@ -40,17 +46,30 @@ export class InputSearch extends Component {
 		}
 	}
 
-	handleBlur(/*e*/){
-		/*const a = e.target;
-		a.focus();
-		this.setState({
-			isDisplayItems: false
+	handleKeyUp(e){
+		this.state.value = e.target.value;
+		this.state.isDisplayItems = true;
+
+		this._onSearch(e.target.value, () => {
+			e.target.focus();
 		});
-		a.focus();
-		this.target = a;
-		//e.target.focus();
-		const b = e.target;
-		console.log(a === b);*/
+	}
+
+	handleClickOutside(e){
+		const { isDisplayItems } = this.state;
+
+		if (isDisplayItems && !this.domNode.contains(e.target)){
+			this.setState({
+				isDisplayItems: false
+			});
+		}
+	}
+
+	handleClick(e){
+		this.state.isDisplayItems = true;
+		this._onSearch(e.target.value, () => {
+			e.target.focus();
+		});
 	}
 
 	handleSelect(item){
@@ -74,7 +93,7 @@ export class InputSearch extends Component {
 					value,
 					placeholder,
 					onKeyUp: this.handleKeyUp,
-					onBlur: this.handleBlur
+					onClick: this.handleClick
 				}),
 				items.length && isDisplayItems && tags.div({
 					class: 'input-search__items'

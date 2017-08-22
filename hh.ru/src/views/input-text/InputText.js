@@ -24,10 +24,12 @@ export class InputText extends Component {
 				placeholder,
 				value,
 				class: `input-text form-control ${className}`,
+				onClick: this.props.onClick,
 				onChange: this.handleChange,
 				onKeyDown: this.props.onKeyDown,
 				onKeyUp: this.props.onKeyUp,
-				onBlur: this.props.onBlur
+				onBlur: this.props.onBlur,
+				onFocus: this.props.onFocus
 			})
 		);
 	}

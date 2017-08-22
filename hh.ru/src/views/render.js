@@ -100,7 +100,7 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 			obj.domNode = document.createElement(type);
 		}
 
-		obj.domNode.setAttribute('id', newId);
+		//obj.domNode.setAttribute('id', newId);
 
 		if (props){
 			obj.props = Object.assign({}, props);
