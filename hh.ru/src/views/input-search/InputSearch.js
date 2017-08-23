@@ -18,6 +18,7 @@ export class InputSearch extends Component {
 		};
 
 		this.handleKeyUp = this.handleKeyUp.bind(this);
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -55,6 +56,15 @@ export class InputSearch extends Component {
 		});
 	}
 
+	handleKeyDown(){
+		const { isDisplayItems } = this.state;
+		const { items } = this.props;
+		if (isDisplayItems && items.length > 0){
+			const itemsContainer = this.refs.items;
+			console.log(itemsContainer);
+		}
+	}
+
 	handleClickOutside(e){
 		const { isDisplayItems } = this.state;
 
@@ -87,21 +97,25 @@ export class InputSearch extends Component {
 		} = this.props;
 		return (
 			tags.div({
-				class: `input-search ${className}`
+				class: `input-search ${className}`,
+				ref: 'test'
 			}, [
 				InputText({
 					value,
 					placeholder,
+					tabindex: 1,
 					onKeyUp: this.handleKeyUp,
+					onKeyDown: this.handleKeyDown,
 					onClick: this.handleClick
 				}),
 				items.length && isDisplayItems && tags.div({
 					class: 'input-search__items'
 				}, tags.div({
-					class: 'input-search__content'
+					class: 'input-search__content',
+					ref: 'items'
 				}, items.map((i, index) => Item({
 					...i,
-					tabindex: index + 1,
+					tabindex: index + 2,
 					onClick: this.handleSelect
 				}))))]
 			)

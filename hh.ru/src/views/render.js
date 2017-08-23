@@ -2,11 +2,11 @@ import eventList from './eventList';
 import tags from './tags';
 
 const EXCLUDED_PROPS = {
-	children: true
+	children: true,
+	ref: true
 };
 let rootDomNode = null;
 const nodes = {};
-//let curComponent = null;
 
 export function update(id){
 	const obj = nodes[id];
@@ -17,6 +17,19 @@ export function update(id){
 export function render({ type, props, parent, id }, container) {
 	rootDomNode = container;
 	_renderTree({ type, props, parent, id }, container);
+}
+
+function _getComponentForNode(id){
+	let node = nodes[id];
+	if (node &&
+		typeof node.type === 'string' &&
+		node.parent
+	) {
+		while (node.parent && typeof node.type !== 'function'){
+			node = node.parent;
+		}
+	}
+	return node.instance;
 }
 
 function _clearNode(id){
@@ -72,7 +85,6 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 			Component.id = newId;
 		}
 
-		//curComponent = Component;
 		obj.props = props;
 		obj.instance = Component;
 		nodes[newId] = obj;
@@ -106,16 +118,12 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 		} else {
 			obj.domNode = document.createElement(type);
 		}
+		nodes[newId] = obj;
 
 		//obj.domNode.setAttribute('id', newId);
 
 		if (props){
 			obj.props = Object.assign({}, props);
-
-			/*if (props.ref && curComponent){
-				curComponent.refs = curComponent.refs || {};
-				curComponent.refs[props.ref] = obj.domNode;
-			}*/
 
 			for (const p in props){
 				if (props.hasOwnProperty(p)){
@@ -177,9 +185,16 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 					obj.domNode.textContent = props.children.toString();
 				}
 			}
+
+			if (props.ref){
+				const curComponent = _getComponentForNode(newId);
+				if (curComponent){
+					curComponent.refs = curComponent.refs || {};
+					curComponent.refs[props.ref] = obj.domNode;
+				}
+			}
 		}
 
-		nodes[newId] = obj;
 		parentDomNode.appendChild(obj.domNode);
 		return obj;
 	}
