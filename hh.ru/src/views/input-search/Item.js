@@ -26,11 +26,14 @@ export class Item extends Component {
 	render(){
 		const {
 			title,
-			description
+			description,
+			tabindex
 		} = this.props;
 		return (
 			tags.div({
 				class: 'input-search__item',
+				tabindex,
+				onKeyUp: console.log,
 				onClick: this.handleClick
 			}, [
 				tags.div({

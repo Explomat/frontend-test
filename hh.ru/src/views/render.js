@@ -1,4 +1,5 @@
 import eventList from './eventList';
+import tags from './tags';
 
 const EXCLUDED_PROPS = {
 	children: true
@@ -38,6 +39,12 @@ function _clearNode(id){
 					node.domNode.removeEventListener(ev, node.props[p]);
 				}
 			}
+		}
+
+		if (node.type === tags.input.type ||
+			node.type === tags.textarea.type
+		){
+			node.domNode.value = '';
 		}
 	}
 }
@@ -117,6 +124,12 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 						obj.domNode.addEventListener(ev, props[p]);
 					} else if (!EXCLUDED_PROPS.hasOwnProperty(p)){
 						obj.domNode.setAttribute(p, props[p]);
+						if ((type === tags.input.type ||
+							type === tags.textarea.type) &&
+							p === 'value'
+						){
+							obj.domNode.value = props[p];
+						}
 					}
 				}
 			}
@@ -141,7 +154,7 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 						let isEqual = false;
 						for (k = childs.length - 1; k >= 0; k--) {
 							const equalNode = childs[k].domNode || childs[k].instance.domNode;
-							if (childNode.isEqualNode(equalNode)){
+							if (childNode === equalNode){
 								isEqual = true;
 							}
 						}

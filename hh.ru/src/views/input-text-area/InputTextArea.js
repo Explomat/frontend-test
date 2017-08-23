@@ -5,25 +5,12 @@ import './input-text-area.styl';
 
 export class InputTextArea extends Component {
 
-	constructor(props){
-		super(props);
-
-		this.handleChange = this.handleChange.bind(this);
-	}
-
-	handleChange(e){
-		if (this.props.onChange){
-			this.props.onChange(e.target.value);
-		}
-	}
-
 	render(){
-		const { value, placeholder, className } = this.props;
+		const { value, className, ...rest } = this.props;
 		return (
 			tags.textarea({
-				placeholder,
 				class: `input-text-area form-control ${className}`,
-				onChange: this.handleChange
+				...rest
 			}, value)
 		);
 	}

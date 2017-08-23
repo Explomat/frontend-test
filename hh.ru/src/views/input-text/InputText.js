@@ -4,32 +4,13 @@ import tags from '../tags';
 import './input-text.styl';
 
 export class InputText extends Component {
-
-	constructor(props){
-		super(props);
-		this.handleChange = this.handleChange.bind(this);
-	}
-
-	handleChange(e){
-		if (this.props.onChange){
-			this.props.onChange(e.target.value);
-		}
-	}
-
 	render(){
-		const { value, placeholder, className } = this.props;
+		const { className, ...rest } = this.props;
 		return (
 			tags.input({
 				type: 'text',
-				placeholder,
-				value,
 				class: `input-text form-control ${className}`,
-				onClick: this.props.onClick,
-				onChange: this.handleChange,
-				onKeyDown: this.props.onKeyDown,
-				onKeyUp: this.props.onKeyUp,
-				onBlur: this.props.onBlur,
-				onFocus: this.props.onFocus
+				...rest
 			})
 		);
 	}

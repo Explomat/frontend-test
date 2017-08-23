@@ -99,8 +99,9 @@ export class InputSearch extends Component {
 					class: 'input-search__items'
 				}, tags.div({
 					class: 'input-search__content'
-				}, items.map(i => Item({
+				}, items.map((i, index) => Item({
 					...i,
+					tabindex: index + 1,
 					onClick: this.handleSelect
 				}))))]
 			)

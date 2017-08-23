@@ -32,25 +32,25 @@ export class Event extends Component {
 		};
 	}
 
-	handleChangeEvent(value){
+	handleChangeEvent(e){
 		/*this.setState({
 			event: value
 		});*/
-		this.state.event = value;
+		this.state.event = e.target.value;
 	}
 
-	handleChangeParticipants(value){
+	handleChangeParticipants(e){
 		/*this.setState({
 			participants: value.split(',')
 		});*/
-		this.state.participants = value.split(',');
+		this.state.participants = e.target.value.split(',');
 	}
 
-	handleChangeDescription(value){
+	handleChangeDescription(e){
 		/*this.setState({
 			description: value
 		});*/
-		this.state.description = value;
+		this.state.description = e.target.value;
 	}
 
 	handleSave(){
@@ -148,7 +148,6 @@ export class Event extends Component {
 						: InputText({
 							value: event,
 							placeholder: 'Событие',
-							focus: true,
 							onChange: this.handleChangeEvent
 						}
 					),

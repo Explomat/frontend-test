@@ -46,7 +46,6 @@ export class Calendar extends Component {
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
 		this.handleSearchEvents = this.handleSearchEvents.bind(this);
 		this.handleSelectEvent = this.handleSelectEvent.bind(this);
-		//this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
 	componentWillMount(){
@@ -106,24 +105,6 @@ export class Calendar extends Component {
 	handleSelectEvent(){
 
 	}
-
-	/*handleClickOutside(e){
-		const shortEventNode = document.getElementById(`${this.id}__short-event`);
-		const { isDisplayShortEvent, isDisplayEvent } = this.state;
-
-		if (shortEventNode && !shortEventNode.contains(e.target) && isDisplayShortEvent){
-			this.setState({
-				isDisplayShortEvent: false
-			});
-		}
-
-		const eventNode = document.getElementById(`${this.id}__event`);
-		if (eventNode && !eventNode.contains(e.target) && isDisplayEvent){
-			this.setState({
-				isDisplayEvent: false
-			});
-		}
-	}*/
 
 	renderCells(date){
 		const year = date.getFullYear();

@@ -24,7 +24,7 @@
 	
 	&__content {
 		word-break: break-word;
-	    overflow-y: hidden;
+	    overflow: hidden;
 	    height: 100%;
 	    font-size: 11px;
 	    
@@ -34,6 +34,13 @@
 			&--not-cur-date {
 				color: #ccc;
 			}
+		}
+		.calendar-cell__event-title {
+			font-weight: 700;
+    		font-size: 12px;
+		}
+		.calendar-cell__event-participants{
+			margin-top: 4px;
 		}
 	}
 }

@@ -14,6 +14,46 @@ export function getState(){
 						event: 'test',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
+					},
+					'2017.7.2': {
+						event: 'test1',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.3': {
+						event: 'test2',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.4': {
+						event: 'test3',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.5': {
+						event: 'test4',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.6': {
+						event: 'test5',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.7': {
+						event: 'test6',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.8': {
+						event: 'test7',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'2017.7.9': {
+						event: 'test8',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
 					}
 				}
 			}

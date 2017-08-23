@@ -36,10 +36,18 @@
 		    width: 210px;
 		    max-height: 400px;
 		    border-radius: 4px;
-		    padding: 8px;
+		    padding: 0 8px;
+		    overflow-y: auto;
 		    
 		    .input-search__item{
-		    	border-bottom: 1px solid #ccc;
+		    	border-bottom: 1px solid #ddd;
+		    	padding: 8px;
+		    	cursor: pointer;
+		    	outline: 0;
+		    	
+		    	&:focus {
+		    		background-color: #BBDEFB;
+		    	}
 
 		    	&:last-child {
 		    		border-bottom: none;
@@ -51,7 +59,7 @@
 		    	}	
 		    	&-description {
 		    		font-size: 11px;
-		    		color: #888;
+		    		color: #6b6b6b;
 		    	}
 		    }
 		}
