@@ -1,6 +1,7 @@
 import Component from '../Component';
 import Element from '../Element';
 import tags from '../tags';
+import { dateToString } from '../../utils/date';
 import './calendar-cell.styl';
 
 export class CalendarCell extends Component {
@@ -27,7 +28,7 @@ export class CalendarCell extends Component {
 
 	render(){
 		const { isSelected } = this.state;
-		const { isCurDate, isCurMonth, title, event } = this.props;
+		const { isCurDate, isCurMonth, title, event, date } = this.props;
 
 		let classes = isCurDate ? 'calendar-cell--cur-date ' : '';
 		classes += isSelected ? 'calendar-cell--selected ' : '';
@@ -37,6 +38,7 @@ export class CalendarCell extends Component {
 		return (
 			tags.div({
 				class: `calendar-cell ${classes}`,
+				'data-date': dateToString(date),
 				onClick: this.handleClick
 			}, tags.div({
 				class: 'calendar-cell__content'

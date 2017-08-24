@@ -9,7 +9,8 @@ const remoteConstants = createRemoteActions([
 
 const constants = {
 	'CALENDAR_SET_PREV_MONTH': 'CALENDAR_SET_PREV_MONTH',
-	'CALENDAR_SET_NEXT_MONTH': 'CALENDAR_SET_NEXT_MONTH'
+	'CALENDAR_SET_NEXT_MONTH': 'CALENDAR_SET_NEXT_MONTH',
+	'CALENDAR_SET_DATE_EVENT': 'CALENDAR_SET_DATE_EVENT'
 };
 
 export default Object.assign(remoteConstants, constants);

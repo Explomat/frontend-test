@@ -68,6 +68,15 @@ register(function calendarStore(action){
 			break;
 		}
 
+		case constants.CALENDAR_SET_DATE_EVENT: {
+			state = {
+				...state,
+				curDate: action.date
+			};
+			emit('update', state);
+			break;
+		}
+
 		case constants.CALENDAR_SEARCH_EVENTS_SUCCESS: {
 			let evs = [];
 			const val = action.value.trim();

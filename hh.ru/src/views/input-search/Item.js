@@ -10,6 +10,7 @@ export class Item extends Component {
 
 		this._filterProp = this._filterProp.bind(this);
 		this.handleClick = this.handleClick.bind(this);
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	_filterProp(key){
@@ -23,6 +24,23 @@ export class Item extends Component {
 		}
 	}
 
+	handleKeyDown(e){
+		const item = this.refs.item;
+		if (e.keyCode === 13 && this.props.onClick){
+			const ommitedProps = omitBy(this.props, this._filterProp);
+			this.props.onClick(ommitedProps);
+		} else {
+			const nextNode =
+				e.keyCode === 40 ? item.nextSibling :
+				e.keyCode === 38 ? item.previousSibling :
+				null;
+			if (nextNode){
+				e.preventDefault();
+				nextNode.focus();
+			}
+		}
+	}
+
 	render(){
 		const {
 			title,
@@ -31,9 +49,10 @@ export class Item extends Component {
 		} = this.props;
 		return (
 			tags.div({
+				ref: 'item',
 				class: 'input-search__item',
 				tabindex,
-				onKeyUp: console.log,
+				onKeyDown: this.handleKeyDown,
 				onClick: this.handleClick
 			}, [
 				tags.div({

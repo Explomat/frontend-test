@@ -6,6 +6,7 @@ import {
 	nextMonth,
 	saveEvent,
 	deleteEvent,
+	setDate,
 	searchEvents
 } from '../../actions/calendarActions';
 import CalendarCell from '../calendar-cell';
@@ -18,7 +19,8 @@ import {
 	getMonthName,
 	getWeekDayName,
 	equalDates,
-	dateToString
+	dateToString,
+	dateToStringForList
 } from '../../utils/date';
 import './calendar.styl';
 
@@ -51,10 +53,6 @@ export class Calendar extends Component {
 	componentWillMount(){
 		addEventListener(updateState.bind(this));
 		getState();
-	}
-
-	componentDidMount(){
-
 	}
 
 	handleToggleDisplayShortEvent(){
@@ -102,8 +100,25 @@ export class Calendar extends Component {
 		searchEvents(val);
 	}
 
-	handleSelectEvent(){
+	handleSelectEvent(event){
+		setDate(event.date);
 
+		const dateString = dateToString(event.date);
+		const cellNode = this.domNode.querySelector(`.calendar-cell[data-date='${dateString}']`);
+		if (cellNode){
+			const { events } = this.state;
+			const elementRect = cellNode.getBoundingClientRect();
+
+			this.setState({
+				isDisplayEvent: true,
+				isDisplayShortEvent: false,
+				curEvent: {
+					elementRect,
+					date: event.date,
+					...events[dateToString(event.date)]
+				}
+			});
+		}
 	}
 
 	renderCells(date){
@@ -220,7 +235,8 @@ export class Calendar extends Component {
 						items: foundEvents.map(fe => {
 							return {
 								...fe,
-								title: fe.event
+								title: fe.event,
+								description: dateToStringForList(fe.date)
 							};
 						}),
 						onSearch: this.handleSearchEvents,

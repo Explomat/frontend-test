@@ -10,47 +10,47 @@ export function getState(){
 			state: {
 				curDate: new Date(),
 				events: {
-					'2017.7.1': {
+					'8/1/2017': {
 						event: 'test',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.2': {
+					'8/2/2017': {
 						event: 'test1',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.3': {
+					'8/3/2017': {
 						event: 'test2',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.4': {
+					'8/4/2017': {
 						event: 'test3',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.5': {
+					'8/5/2017': {
 						event: 'test4',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.6': {
+					'8/6/2017': {
 						event: 'test5',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.7': {
+					'8/7/2017': {
 						event: 'test6',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.8': {
+					'8/8/2017': {
 						event: 'test7',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'2017.7.9': {
+					'8/9/2017': {
 						event: 'test8',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
@@ -84,6 +84,13 @@ export function saveEvent(event, date){
 export function deleteEvent(date){
 	dispatch({
 		type: constants.CALENDAR_DELETE_EVENT_SUCCESS,
+		date
+	});
+}
+
+export function setDate(date){
+	dispatch({
+		type: constants.CALENDAR_SET_DATE_EVENT,
 		date
 	});
 }

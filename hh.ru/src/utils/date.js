@@ -58,18 +58,31 @@ export function equalDates(fDate, sDate){
 
 export function dateToString(date){
 	const d = tryDateParse(date);
-	/*const options = {
-		year: 'numeric',
-		month: '2-digit',
-		day: 'numeric'
-	};*/
 	if (d){
-		return (
+		const options = {
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric'
+		};
+		return d.toLocaleString('en', options);
+		/*return (
 			d.getFullYear() + '.' +
 			d.getMonth() + '.' +
 			d.getDate()
-		);
-		//return d.toLocaleString('ru', options);
+		);*/
+	}
+	return '';
+}
+
+export function dateToStringForList(date){
+	const d = tryDateParse(date);
+	if (d){
+		const options = {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		};
+		return d.toLocaleString('ru', options);
 	}
 	return '';
 }

@@ -56,12 +56,17 @@ export class InputSearch extends Component {
 		});
 	}
 
-	handleKeyDown(){
+	handleKeyDown(e){
 		const { isDisplayItems } = this.state;
 		const { items } = this.props;
-		if (isDisplayItems && items.length > 0){
+		if (
+			isDisplayItems &&
+			items.length > 0 &&
+			e.keyCode === 40
+		){
+			e.preventDefault();
 			const itemsContainer = this.refs.items;
-			console.log(itemsContainer);
+			itemsContainer.firstChild.focus();
 		}
 	}
 
@@ -83,6 +88,9 @@ export class InputSearch extends Component {
 	}
 
 	handleSelect(item){
+		this.setState({
+			isDisplayItems: false
+		});
 		if (this.props.onSelect){
 			this.props.onSelect(item);
 		}
