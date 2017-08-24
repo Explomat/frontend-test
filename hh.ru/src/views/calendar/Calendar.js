@@ -45,6 +45,7 @@ export class Calendar extends Component {
 		this.handleDisplayEvent = this.handleDisplayEvent.bind(this);
 		this.handleHideEvent = this.handleHideEvent.bind(this);
 		this.handleSaveEvent = this.handleSaveEvent.bind(this);
+		this.handleSaveShortEvent = this.handleSaveShortEvent.bind(this);
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
 		this.handleSearchEvents = this.handleSearchEvents.bind(this);
 		this.handleSelectEvent = this.handleSelectEvent.bind(this);
@@ -87,6 +88,15 @@ export class Calendar extends Component {
 			isDisplayEvent: false
 		});
 		saveEvent(event, date);
+	}
+
+	handleSaveShortEvent(eventName, date){
+		this.setState({
+			isDisplayShortEvent: false
+		});
+		saveEvent({
+			event: eventName
+		}, date);
 	}
 
 	handleDeleteEvent(date){
@@ -228,6 +238,7 @@ export class Calendar extends Component {
 						class: 'form-control calendar__buttons--refresh'
 					}, 'Обновить'),
 					isDisplayShortEvent && ShortEvent({
+						onSave: this.handleSaveShortEvent,
 						onClose: this.handleToggleDisplayShortEvent
 					}),
 					InputSearch({

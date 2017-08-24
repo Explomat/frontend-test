@@ -1,7 +1,7 @@
 export function tryDateParse(date){
 	const _date = Date.parse(date);
 	if (!isNaN(_date)){
-		return date;
+		return new Date(date);
 	}
 	return null;
 }
@@ -85,4 +85,49 @@ export function dateToStringForList(date){
 		return d.toLocaleString('ru', options);
 	}
 	return '';
+}
+
+export function getEnMonth(month){
+	if (!month){
+		return;
+	}
+
+	const ruMonths = [
+		'Января',
+		'Февраля',
+		'Марта',
+		'Апреля',
+		'Мая',
+		'Июня',
+		'Июля',
+		'Августа',
+		'Сентября',
+		'Октября',
+		'Ноября',
+		'Декабря'
+	];
+	const enMonths = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	];
+
+	let index = null;
+	for (let i = 0; i < ruMonths.length; i++) {
+		if (ruMonths[i].toLowerCase() === month.toLowerCase()) {
+			index = i;
+			break;
+		}
+	}
+
+	return enMonths[index];
 }

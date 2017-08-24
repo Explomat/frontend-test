@@ -81,10 +81,12 @@ export class InputSearch extends Component {
 	}
 
 	handleClick(e){
-		this.state.isDisplayItems = true;
-		this._onSearch(e.target.value, () => {
-			e.target.focus();
-		});
+		if (e.target.value.trim() !== ''){
+			this.state.isDisplayItems = true;
+			this._onSearch(e.target.value, () => {
+				e.target.focus();
+			});
+		}
 	}
 
 	handleSelect(item){

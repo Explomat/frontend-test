@@ -2,6 +2,7 @@ import Component from '../Component';
 import Element from '../Element';
 import InputText from '../input-text';
 import InputTextArea from '../input-text-area';
+import Error from '../error';
 import tags from '../tags';
 import './event.styl';
 
@@ -18,6 +19,7 @@ export class Event extends Component {
 		this.handleClose = this.handleClose.bind(this);
 
 		this.state = {
+			error: null,
 			event: '',
 			participants: [],
 			description: ''
@@ -54,16 +56,22 @@ export class Event extends Component {
 	}
 
 	handleSave(){
-		if (this.props.onSave){
-			this.props.onSave({
-				event: this.props.event ?
-					this.props.event : this.state.event,
-				participants: this.props.participants.length > 0 ?
-					this.props.participants : this.state.participants,
-				description: this.props.description ?
-					this.props.description : this.state.description
-			}, this.props.date);
-			this._resetState();
+		if (this.props.onSave)		{
+			if (this.props.event || this.state.event) {
+				this.props.onSave({
+					event: this.props.event ?
+						this.props.event : this.state.event,
+					participants: this.props.participants.length > 0 ?
+						this.props.participants : this.state.participants,
+					description: this.props.description ?
+						this.props.description : this.state.description
+				}, this.props.date);
+				this._resetState();
+			} else {
+				this.setState({
+					error: 'Необходимо заполнить название'
+				});
+			}
 		}
 	}
 
@@ -111,6 +119,7 @@ export class Event extends Component {
 	}
 
 	render(){
+		const { error } = this.state;
 		const { event, participants, description } = this.props;
 		const { top, left, isTopLeft, isTopRight, isBottomLeft, isBottomRight } = this.getPositionAndPointers();
 		const classes = this.props.isDisplay ? 'event--display' : '';
@@ -182,7 +191,10 @@ export class Event extends Component {
 						type: 'button',
 						class: 'event__delete-button',
 						onClick: this.handleDelete
-					}, 'Удалить')
+					}, 'Удалить'),
+					error && Error({
+						text: error
+					})
 				])
 			])
 			)

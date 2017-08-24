@@ -52,11 +52,16 @@ register(function calendarStore(action){
 			break;
 		}
 		case constants.CALENDAR_SAVE_EVENT_SUCCESS: {
+			const ev = action.event || {};
 			state = {
 				...state,
 				events: {
 					...state.events,
-					[dateToString(action.date)]: action.event
+					[dateToString(action.date)]: {
+						event: ev.event || '',
+						description: ev.description || '',
+						participants: ev.participants || []
+					}
 				}
 			};
 			emit('update', state);
