@@ -32,6 +32,7 @@ export class CalendarCell extends Component {
 
 		let classes = isCurDate ? 'calendar-cell--cur-date ' : '';
 		classes += isSelected ? 'calendar-cell--selected ' : '';
+		classes += event.event ? 'calendar-cell--has-event ' : '';
 
 		const titleClasses = !isCurMonth ? 'calendar-cell__title--not-cur-date' : '';
 		

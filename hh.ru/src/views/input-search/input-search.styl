@@ -36,7 +36,6 @@
 		    width: 210px;
 		    max-height: 400px;
 		    border-radius: 4px;
-		    padding: 0 8px;
 		    overflow-y: auto;
 		    
 		    .input-search__item{
@@ -44,9 +43,15 @@
 		    	padding: 8px;
 		    	cursor: pointer;
 		    	outline: 0;
+		    	white-space: nowrap;
+		    	margin: 4px;
 		    	
 		    	&:focus {
-		    		background-color: #BBDEFB;
+		    		background-color: #64B5F6;
+		    	}
+		    	
+		    	&:focus .input-search__item-title:after {	
+		    		background: linear-gradient(to right, rgba(255,255,255, 0), #64B5F6 100%);
 		    	}
 
 		    	&:last-child {
@@ -56,6 +61,18 @@
 		    	&-title {
 		    		font-weight: 700;
 		    		font-size: 14px;
+    				overflow: hidden;
+    				position: relative;
+    				
+    				&:after {
+    					content: '';
+					    position: absolute;
+					    right: 0;
+					    top: 0;
+					    width: 40px;
+					    height: 100%;
+					    background: linear-gradient(to right, rgba(255,255,255, 0.2), #fff 100%);
+    				}
 		    	}	
 		    	&-description {
 		    		font-size: 11px;

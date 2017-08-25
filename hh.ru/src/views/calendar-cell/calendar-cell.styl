@@ -14,12 +14,21 @@
 	}
 	
 	&--selected {
-		border: 2px solid blue;
+		border: 2px solid #aad7fb;
 	}
 	&--cur-date {
 		background-color: #f3f3f3;
 		font-weight: 700;
     	font-size: 13px;
+    	border: 1px solid #dadada;
+    	border-right: 2px solid #dadada;
+    	
+    	&:last-child {
+    		border-right: none;
+    	}
+	}
+	&--has-event {
+		background-color: rgba(187, 222, 251, 0.5);
 	}
 	
 	&__content {
@@ -42,6 +51,7 @@
 		.calendar-cell__event-participants{
 			margin-top: 8px;
 			line-height: 13px;
+			font-weight: 100;
 		}
 	}
 }

@@ -1,3 +1,5 @@
+import { isDay, isYear } from './validate';
+
 export function tryDateParse(date){
 	const _date = Date.parse(date);
 	if (!isNaN(_date)){
@@ -74,6 +76,17 @@ export function dateToString(date){
 	return '';
 }
 
+export function parseDateFromString(str){
+	const [day, month, year] = str.split(' ');
+	const enMonth = getEnMonth(month);
+	let date = null;
+	if (isDay(day) && enMonth){
+		const y = isYear(year) ? year : new Date().getFullYear();
+		date = tryDateParse(`${day} ${enMonth} ${y}`);
+	}
+	return date;
+}
+
 export function dateToStringForList(date){
 	const d = tryDateParse(date);
 	if (d){
@@ -87,7 +100,7 @@ export function dateToStringForList(date){
 	return '';
 }
 
-export function getEnMonth(month){
+function getEnMonth(month){
 	if (!month){
 		return;
 	}

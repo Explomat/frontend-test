@@ -53,12 +53,6 @@ function _clearNode(id){
 				}
 			}
 		}
-
-		if (node.type === tags.input.type ||
-			node.type === tags.textarea.type
-		){
-			node.domNode.value = '';
-		}
 	}
 }
 
@@ -132,9 +126,9 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 						obj.domNode.addEventListener(ev, props[p]);
 					} else if (!EXCLUDED_PROPS.hasOwnProperty(p)){
 						obj.domNode.setAttribute(p, props[p]);
-						if ((type === tags.input.type ||
-							type === tags.textarea.type) &&
-							p === 'value'
+						if (type === tags.input.type &&
+							p === 'value' &&
+							obj.domNode.value !== props[p]
 						){
 							obj.domNode.value = props[p];
 						}
@@ -182,7 +176,13 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 						obj.domNode.removeChild(obj.domNode.firstChild);
 					}
 				} else {
-					obj.domNode.textContent = props.children.toString();
+					const text = props.children.toString();
+					if (type === tags.textarea.type) {
+						obj.domNode.value = text;
+						obj.domNode.textContent = text;
+					} else {
+						obj.domNode.textContent = text;
+					}
 				}
 			}
 

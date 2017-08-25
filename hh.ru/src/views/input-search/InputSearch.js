@@ -107,8 +107,7 @@ export class InputSearch extends Component {
 		} = this.props;
 		return (
 			tags.div({
-				class: `input-search ${className}`,
-				ref: 'test'
+				class: `input-search ${className}`
 			}, [
 				InputText({
 					value,

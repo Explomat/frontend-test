@@ -1,7 +1,7 @@
 import { subscribe, emit } from '../utils/eventEmmiter';
 import { register } from './dispatcher';
 import constants from '../constants';
-import { dateToString } from '../utils/date';
+import { dateToString, parseDateFromString, equalDates } from '../utils/date';
 
 let state = {
 	isFetching: false,
@@ -84,11 +84,20 @@ register(function calendarStore(action){
 
 		case constants.CALENDAR_SEARCH_EVENTS_SUCCESS: {
 			let evs = [];
-			const val = action.value.trim();
+			const val = action.value.trim().toLowerCase();
 
 			if (val !== ''){
 				evs = Object.keys(state.events).filter(e => {
-					return ~state.events[e].event.indexOf(val);
+					const ev = state.events[e];
+					const participants =
+						ev.participants
+							.filter(p => ~p.toLowerCase().indexOf(val));
+					const d = parseDateFromString(val);
+					return ~ev.event
+							.toLowerCase()
+							.indexOf(val) ||
+							participants.length > 0 ||
+							equalDates(d, new Date(e));
 				}).map(e => {
 					return {
 						...state.events[e],

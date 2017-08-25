@@ -15,42 +15,42 @@ export function getState(){
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'8/2/2017': {
+					'8/3/2017': {
 						event: 'test1',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
-					'8/3/2017': {
-						event: 'test2',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/4/2017': {
-						event: 'test3',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
 					'8/5/2017': {
-						event: 'test4',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/6/2017': {
-						event: 'test5',
+						event: 'test222222222222222222222222222222',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
 					'8/7/2017': {
-						event: 'test6',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/8/2017': {
-						event: 'test7',
+						event: 'test3',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'
 					},
 					'8/9/2017': {
+						event: 'test4',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'8/11/2017': {
+						event: 'test5',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'8/13/2017': {
+						event: 'test6',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'8/15/2017': {
+						event: 'test7',
+						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
+						description: 'description'
+					},
+					'8/17/2017': {
 						event: 'test8',
 						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
 						description: 'description'

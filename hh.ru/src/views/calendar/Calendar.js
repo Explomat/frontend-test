@@ -233,16 +233,13 @@ export class Calendar extends Component {
 						class: 'form-control calendar__buttons--add',
 						onClick: this.handleToggleDisplayShortEvent
 					}, 'Добавить'),
-					tags.button({
-						type: 'button',
-						class: 'form-control calendar__buttons--refresh'
-					}, 'Обновить'),
 					isDisplayShortEvent && ShortEvent({
 						onSave: this.handleSaveShortEvent,
 						onClose: this.handleToggleDisplayShortEvent
 					}),
 					InputSearch({
 						className: 'calendar__search',
+						placeholder: 'Событие, дата или участник',
 						items: foundEvents.map(fe => {
 							return {
 								...fe,

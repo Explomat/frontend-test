@@ -3,8 +3,7 @@ import Element from '../Element';
 import InputText from '../input-text';
 import Error from '../error';
 import tags from '../tags';
-import { tryDateParse, getEnMonth } from  '../../utils/date';
-import { isNumber } from '../../utils/validate';
+import { parseDateFromString } from  '../../utils/date';
 import './short-event.styl';
 
 export class ShortEvent extends Component {
@@ -19,32 +18,32 @@ export class ShortEvent extends Component {
 
 		this.handleClose = this.handleClose.bind(this);
 		this.handleClick = this.handleClick.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	_save(){
 		const val = this.state.text;
 		if (val){
-			const [date, event] = val.split(',');
-			if (date) {
-				const [day, month] = date.split(' ');
-				const enMonth = getEnMonth(month);
-				if (isNumber(day) && enMonth){
-					const parsedDate = tryDateParse(`${day} ${enMonth} ${new Date().getFullYear()}`);
-					if (parsedDate && event) {
+			let [dateString, event] = val.split(',');
+			if (dateString) {
+				dateString = dateString.trim();
+				const parsedDate = parseDateFromString(dateString);
+
+				if (parsedDate) {
+					event = event.trim();
+					if (event){
 						this.props.onSave(
 							event,
 							parsedDate
 						);
 					} else {
 						this.setState({
-							error: 'Неверный формат даты или не указано название мероприятия'
+							error: 'Не указано название мероприятия'
 						});
 					}
 				} else {
 					this.setState({
-						error: 'Не указано число или месяц'
+						error: 'Неверный формат даты'
 					});
 				}
 			} else {
@@ -66,22 +65,18 @@ export class ShortEvent extends Component {
 		}
 	}
 
-	handleChange(e){
-		this.state.text = e.target.value;
-	}
-
 	handleClick(e){
-		if (!this.props.onSave){
+		if (this.props.onSave){
 			e.preventDefault();
-			return;
+			this.state.error = null;
+			this._save();
 		}
-
-		this.state.event = null;
-		this._save();
 	}
 
 	handleKeyDown(e){
-		if (e.keyCode === 13){
+		this.state.text = e.target.value;
+		if (e.keyCode === 13 && this.props.onSave){
+			e.preventDefault();
 			this.state.error = null;
 			this._save();
 		}
@@ -106,7 +101,6 @@ export class ShortEvent extends Component {
 				}, InputText({
 					value: text,
 					placeholder: `${new Date().toLocaleString('ru', { month: 'long', day: 'numeric' })}, День рождение`,
-					onChange: this.handleChange,
 					onKeyDown: this.handleKeyDown
 				})),
 				tags.div({
