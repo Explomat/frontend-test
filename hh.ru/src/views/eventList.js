@@ -1,4 +1,5 @@
 const events = {
+	'onInput': true,
 	'onBlur': true,
 	'onChange': true,
 	'onClick': true,

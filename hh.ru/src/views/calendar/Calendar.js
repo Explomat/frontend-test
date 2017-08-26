@@ -71,6 +71,7 @@ export class Calendar extends Component {
 
 	handleDisplayEvent(elementRect, date){
 		const { events } = this.state;
+		const ev = events[dateToString(date)];
 
 		this.setState({
 			isDisplayEvent: true,
@@ -78,7 +79,8 @@ export class Calendar extends Component {
 			curEvent: {
 				elementRect,
 				date,
-				...events[dateToString(date)]
+				isEdit: !!ev,
+				...ev
 			}
 		});
 	}
@@ -117,6 +119,7 @@ export class Calendar extends Component {
 		const cellNode = this.domNode.querySelector(`.calendar-cell[data-date='${dateString}']`);
 		if (cellNode){
 			const { events } = this.state;
+			const ev = events[dateToString(event.date)];
 			const elementRect = cellNode.getBoundingClientRect();
 
 			this.setState({
@@ -125,7 +128,8 @@ export class Calendar extends Component {
 				curEvent: {
 					elementRect,
 					date: event.date,
-					...events[dateToString(event.date)]
+					isEdit: !!ev,
+					...ev
 				}
 			});
 		}
@@ -259,15 +263,16 @@ export class Calendar extends Component {
 					class: 'calendar__menu'
 				}, [
 					tags.span({
-						class: 'menu__prev-month',
+						class: 'calendar__prev-month',
 						onClick: prevMonth
-					}, 'prev'),
+					}),
 					tags.span({
-						class: 'menu__cur-date'
+						class: 'calendar__cur-date'
 					}, `${getMonthName(curDate)} ${curDate.getFullYear()}`),
 					tags.span({
+						class: 'calendar__next-month',
 						onClick: nextMonth
-					}, 'next')
+					})
 				]),
 				tags.div({
 					class: 'calendar__rows'

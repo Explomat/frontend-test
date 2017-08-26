@@ -17,7 +17,7 @@ export class InputSearch extends Component {
 			isDisplayItems: true
 		};
 
-		this.handleKeyUp = this.handleKeyUp.bind(this);
+		this.handleInput = this.handleInput.bind(this);
 		this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
@@ -47,7 +47,7 @@ export class InputSearch extends Component {
 		}
 	}
 
-	handleKeyUp(e){
+	handleInput(e){
 		this.state.value = e.target.value;
 		this.state.isDisplayItems = true;
 
@@ -113,7 +113,8 @@ export class InputSearch extends Component {
 					value,
 					placeholder,
 					tabindex: 1,
-					onKeyUp: this.handleKeyUp,
+					className: 'input-search__input',
+					onInput: this.handleInput,
 					onKeyDown: this.handleKeyDown,
 					onClick: this.handleClick
 				}),

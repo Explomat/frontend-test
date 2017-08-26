@@ -3,15 +3,12 @@
   "description": "Календарь",
   "author": "Matveev Savva",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require ./test/testHelper.js  --recursive",
-    "test:watch": "npm run test -- --watch",
     "set-prod": "set NODE_ENV=production",
     "set-dev": "set NODE_ENV=development",
     "start-dev-server": "npm run set-dev && node server.js"
   },
   "dependencies": {
-    "babel-polyfill": "^6.13.0",
-    "classlist-polyfill": "^1.0.3"
+    "babel-polyfill": "^6.13.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

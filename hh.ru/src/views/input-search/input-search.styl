@@ -1,6 +1,20 @@
 .input-search {
 	display: inline-block;
 	
+	&:before {
+		content: '\1F50D';
+	    display: inline-block;
+	    position: absolute;
+	    left: 6px;
+	    top: 50%;
+	    color: #7d7d7d;
+	    transform: translateY(-50%);
+	}
+	
+	& &__input {
+		padding-left: 24px;
+	}
+
 	&__items {
 		position: absolute;
 		top: 100%;

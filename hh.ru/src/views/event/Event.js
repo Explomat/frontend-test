@@ -120,7 +120,7 @@ export class Event extends Component {
 
 	render(){
 		const { error } = this.state;
-		const { event, participants, description } = this.props;
+		const { isEdit, event, date, participants, description } = this.props;
 		const { top, left, isTopLeft, isTopRight, isBottomLeft, isBottomRight } = this.getPositionAndPointers();
 		const classes = this.props.isDisplay ? 'event--display' : '';
 		return (
@@ -152,7 +152,7 @@ export class Event extends Component {
 				tags.div({
 					class: 'event__body'
 				}, [
-					event ?
+					event && isEdit ?
 						tags.strong(null, event)
 						: InputText({
 							value: event,
@@ -161,7 +161,10 @@ export class Event extends Component {
 							onChange: this.handleChangeEvent
 						}
 					),
-					participants.length > 0 ?
+					isEdit && tags.div({
+						class: 'event__date'
+					}, date.toLocaleString('ru', { month: 'long', day: 'numeric' })),
+					participants.length > 0 && isEdit ?
 						tags.div(null, [tags.div(null, 'Участники'), tags.div(null, participants.join(','))])
 						: InputText({
 							value: participants.join(','),
@@ -169,7 +172,7 @@ export class Event extends Component {
 							onChange: this.handleChangeParticipants
 						}
 					),
-					description ?
+					description && isEdit ?
 						tags.div(null, description)
 						: InputTextArea({
 							value: description,
@@ -203,6 +206,7 @@ export class Event extends Component {
 }
 
 Event.defaultProps = {
+	isEdit: false,
 	event: '',
 	participants: [],
 	description: ''
