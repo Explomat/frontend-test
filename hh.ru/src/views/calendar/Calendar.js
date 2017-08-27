@@ -49,6 +49,8 @@ export class Calendar extends Component {
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
 		this.handleSearchEvents = this.handleSearchEvents.bind(this);
 		this.handleSelectEvent = this.handleSelectEvent.bind(this);
+		this.handlePrevMonth = this.handlePrevMonth.bind(this);
+		this.handleNextMonth = this.handleNextMonth.bind(this);
 	}
 
 	componentWillMount(){
@@ -135,6 +137,20 @@ export class Calendar extends Component {
 		}
 	}
 
+	handlePrevMonth(){
+		this.setState({
+			isDisplayEvent: false
+		});
+		prevMonth();
+	}
+
+	handleNextMonth(){
+		this.setState({
+			isDisplayEvent: false
+		});
+		nextMonth();
+	}
+
 	renderCells(date){
 		const year = date.getFullYear();
 		const month = date.getMonth();
@@ -157,6 +173,7 @@ export class Calendar extends Component {
 		for (let i = 0; i < diffPrevDays; i++) {
 			ev = events[dateToString(curDate)];
 			cells.push(CalendarCell({
+				key: dateToString(curDate),
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				isCurDate: equalDates(dateNow, curDate),
 				date: new Date(curDate),
@@ -168,6 +185,7 @@ export class Calendar extends Component {
 		for (let i = diffPrevDays; i < 7; i++) {
 			ev = events[dateToString(curDate)];
 			cells.push(CalendarCell({
+				key: dateToString(curDate),
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				date: new Date(curDate),
 				event: ev ? ev : undefined,
@@ -188,6 +206,7 @@ export class Calendar extends Component {
 			for (let j = 0; j < 7; j++) {
 				ev = events[dateToString(curDate)];
 				cells.push(CalendarCell({
+					key: dateToString(curDate),
 					title: curDate.getDate(),
 					date: new Date(curDate),
 					event: ev ? ev : undefined,
@@ -264,14 +283,14 @@ export class Calendar extends Component {
 				}, [
 					tags.span({
 						class: 'calendar__prev-month',
-						onClick: prevMonth
+						onClick: this.handlePrevMonth
 					}),
 					tags.span({
 						class: 'calendar__cur-date'
 					}, `${getMonthName(curDate)} ${curDate.getFullYear()}`),
 					tags.span({
 						class: 'calendar__next-month',
-						onClick: nextMonth
+						onClick: this.handleNextMonth
 					})
 				]),
 				tags.div({

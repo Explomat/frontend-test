@@ -3,7 +3,8 @@ import tags from './tags';
 
 const EXCLUDED_PROPS = {
 	children: true,
-	ref: true
+	ref: true,
+	key: true
 };
 let rootDomNode = null;
 const nodes = {};
@@ -19,6 +20,18 @@ export function render({ type, props, parent, id }, container) {
 	_renderTree({ type, props, parent, id }, container);
 }
 
+function _removeNode(nodeId){
+	let node = nodes[nodeId];
+	if (node.parent && node.parent.instance){
+		node = node.parent;
+	}
+	Object.keys(nodes).forEach(n => {
+		if (~n.indexOf(node.id)) {
+			delete nodes[n];
+		}
+	});
+}
+
 function _getComponentForNode(id){
 	let node = nodes[id];
 	if (node &&
@@ -29,7 +42,7 @@ function _getComponentForNode(id){
 			node = node.parent;
 		}
 	}
-	return node.instance;
+	return node && node.instance;
 }
 
 function _clearNode(id){
@@ -56,7 +69,7 @@ function _clearNode(id){
 	}
 }
 
-function _renderTree({ type, props, parent, id }, parentDomNode) {
+function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 	const elId = id !== undefined ?
 		id.toString()[(id.toString().length - 1)] : '0';
 	const newId = parent ? `${parent.id}.${elId}` : '0';
@@ -67,12 +80,12 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 		parent
 	};
 	
-	const isSameComponent = (newId in nodes) &&
-								nodes[newId].type === type;
+	const isSameElement = nodes.hasOwnProperty(newId) &&
+							nodes[newId].type === type;
 	
 	if (typeof type === 'function'){
 		let Component = null;
-		if (isSameComponent){
+		if (isSameElement && !key){
 			Component = nodes[newId].instance;
 		} else {
 			Component = new type(props);
@@ -83,7 +96,7 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 		obj.instance = Component;
 		nodes[newId] = obj;
 
-		if (Component.componentWillMount && !isSameComponent){
+		if (Component.componentWillMount && !isSameElement){
 			Component.componentWillMount();
 			return;
 		}
@@ -93,20 +106,19 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 
 		if (el){
 			const child = _renderTree({
-				type: el.type,
-				props: el.props,
+				...el,
 				parent: obj,
 				id: '0'
 			}, parentDomNode);
 			Component.domNode = child.domNode;
 
-			if (Component.componentDidMount && !isSameComponent){
+			if (Component.componentDidMount && !isSameElement){
 				Component.componentDidMount();
 			}
 		}
 		return obj;
 	} else if (typeof type === 'string') {
-		if (isSameComponent){
+		if (isSameElement){
 			obj.domNode = nodes[newId].domNode;
 			_clearNode(newId);
 		} else {
@@ -114,7 +126,7 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 		}
 		nodes[newId] = obj;
 
-		//obj.domNode.setAttribute('id', newId);
+		obj.domNode.setAttribute('data-id', newId);
 
 		if (props){
 			obj.props = Object.assign({}, props);
@@ -144,30 +156,30 @@ function _renderTree({ type, props, parent, id }, parentDomNode) {
 						const ch = props.children[i];
 						if (ch){
 							childs.push(_renderTree({
-								type: ch.type,
-								props: ch.props,
+								...ch,
 								parent: obj,
 								id: i
 							}, obj.domNode));
 						}
 					}
 					for (j = obj.domNode.childNodes.length - 1; j >= 0; j--) {
-						const childNode = obj.domNode.childNodes[j];
+						const childDomNode = obj.domNode.childNodes[j];
 						let isEqual = false;
 						for (k = childs.length - 1; k >= 0; k--) {
 							const equalNode = childs[k].domNode || childs[k].instance.domNode;
-							if (childNode === equalNode){
+							if (childDomNode === equalNode){
 								isEqual = true;
 							}
 						}
 						if (!isEqual){
-							obj.domNode.removeChild(childNode);
+							const dataId = childDomNode.getAttribute('data-id');
+							_removeNode(dataId);
+							obj.domNode.removeChild(childDomNode);
 						}
 					}
 				} else if (typeof props.children === 'object'){
 					_renderTree({
-						type: props.children.type,
-						props: props.children.props,
+						...props.children,
 						parent: obj,
 						id: '0'
 					}, obj.domNode);
