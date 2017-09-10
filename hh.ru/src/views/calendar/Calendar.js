@@ -10,6 +10,7 @@ import {
 	searchEvents
 } from '../../actions/calendarActions';
 import CalendarCell from '../calendar-cell';
+//import Test from '../Test';
 import ShortEvent from '../short-event';
 import Event from '../event';
 import InputSearch from '../input-search';
@@ -36,10 +37,14 @@ export class Calendar extends Component {
 		super(props);
 
 		this.state = {
+			curDate: new Date(),
 			curEvent: null,
 			isDisplayEvent: false,
 			isDisplayShortEvent: false
 		};
+
+		this.handleTestPrev = this.handleTestPrev.bind(this);
+		this.handleTestNext = this.handleTestNext.bind(this);
 		
 		this.handleToggleDisplayShortEvent = this.handleToggleDisplayShortEvent.bind(this);
 		this.handleDisplayEvent = this.handleDisplayEvent.bind(this);
@@ -56,6 +61,20 @@ export class Calendar extends Component {
 	componentWillMount(){
 		addEventListener(updateState.bind(this));
 		getState();
+	}
+
+	handleTestPrev(){
+		const { curDate } = this.state;
+		this.setState({
+			curDate: new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate())
+		});
+	}
+
+	handleTestNext(){
+		const { curDate } = this.state;
+		this.setState({
+			curDate: new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate())
+		});
 	}
 
 	handleToggleDisplayShortEvent(){
@@ -177,7 +196,7 @@ export class Calendar extends Component {
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				isCurDate: equalDates(dateNow, curDate),
 				date: new Date(curDate),
-				event: ev ? ev : undefined,
+				event: ev,
 				onClick: this.handleDisplayEvent
 			}));
 			curDate.setDate(curDate.getDate() + 1);
@@ -188,7 +207,7 @@ export class Calendar extends Component {
 				key: dateToString(curDate),
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				date: new Date(curDate),
-				event: ev ? ev : undefined,
+				event: ev,
 				isCurMonth: true,
 				isCurDate: equalDates(dateNow, curDate),
 				onClick: this.handleDisplayEvent
@@ -209,7 +228,7 @@ export class Calendar extends Component {
 					key: dateToString(curDate),
 					title: curDate.getDate(),
 					date: new Date(curDate),
-					event: ev ? ev : undefined,
+					event: ev,
 					isCurDate: equalDates(dateNow, curDate),
 					isCurMonth: curDate <= lastDayInCurMonth,
 					onClick: this.handleDisplayEvent
@@ -224,6 +243,21 @@ export class Calendar extends Component {
 	}
 
 	render(){
+		/*const { curDate } = this.state;
+		return tags.div({
+			key: 'test'
+		}, [
+			tags.span({
+				onClick: this.handleTestPrev
+			}, 'prev'),
+			Test({
+				key: dateToString(curDate),
+				title: dateToString(curDate)
+			}),
+			tags.span({
+				onClick: this.handleTestNext
+			}, 'next')
+		]);*/
 		const {
 			isFetching,
 			isDisplayShortEvent,

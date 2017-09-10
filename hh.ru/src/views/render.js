@@ -70,11 +70,17 @@ function _clearNode(id){
 }
 
 function _renderTree({ key, type, props, parent, id }, parentDomNode) {
-	const elId = id !== undefined ?
-		id.toString()[(id.toString().length - 1)] : '0';
-	const newId = parent ? `${parent.id}.${elId}` : '0';
-
+	const _id = id !== undefined ? id.toString() : '0';
+	let [ oid ] = _id.split('$');
+	oid = oid[(oid.length - 1)];
+	const okey = key !== undefined && key !== null ? `$${key}` : '';
+	
+	const parentId = parent ? parent.id.toString() : '0';
+	const [ pid ] = parentId.split('$');
+	
+	const newId = `${pid}.${oid}${okey}`;
 	const obj = {
+		key,
 		id: newId,
 		type,
 		parent
@@ -85,7 +91,8 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 	
 	if (typeof type === 'function'){
 		let Component = null;
-		if (isSameElement && !key){
+
+		if (isSameElement){
 			Component = nodes[newId].instance;
 		} else {
 			Component = new type(props);
@@ -172,8 +179,10 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 							}
 						}
 						if (!isEqual){
-							const dataId = childDomNode.getAttribute('data-id');
-							_removeNode(dataId);
+							if (key === undefined || key === null){
+								const dataId = childDomNode.getAttribute('data-id');
+								_removeNode(dataId);
+							}
 							obj.domNode.removeChild(childDomNode);
 						}
 					}
