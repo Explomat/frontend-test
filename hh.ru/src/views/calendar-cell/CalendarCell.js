@@ -1,7 +1,7 @@
-import Component from '../Component';
-import Element from '../Element';
-import tags from '../tags';
-import { dateToString } from '../../utils/date';
+import Component from 'src/lib/Component';
+import Element from 'src/lib/Element';
+import tags from 'src/lib/tags';
+import { dateToString } from 'src/utils/date';
 import './calendar-cell.styl';
 
 export class CalendarCell extends Component {

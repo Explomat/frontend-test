@@ -1,6 +1,6 @@
-import Component from '../Component';
-import Element from '../Element';
-import tags from '../tags';
+import Component from 'src/lib/Component';
+import Element from 'src/lib/Element';
+import tags from 'src/lib/tags';
 import './input-text-area.styl';
 
 export class InputTextArea extends Component {

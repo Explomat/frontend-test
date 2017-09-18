@@ -1,8 +1,8 @@
-import Component from '../Component';
-import Element from '../Element';
+import Component from 'src/lib/Component';
+import Element from 'src/lib/Element';
+import tags from 'src/lib/tags';
 import Item from './Item';
-import InputText from '../input-text';
-import tags from '../tags';
+import InputText from 'src/views/input-text';
 import './input-search.styl';
 
 const TIMEOUT = 300;

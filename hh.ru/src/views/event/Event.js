@@ -1,9 +1,9 @@
-import Component from '../Component';
-import Element from '../Element';
-import InputText from '../input-text';
-import InputTextArea from '../input-text-area';
-import Error from '../error';
-import tags from '../tags';
+import Component from 'src/lib/Component';
+import Element from 'src/lib/Element';
+import tags from 'src/lib/tags';
+import InputText from 'src/views/input-text';
+import InputTextArea from 'src/views/input-text-area';
+import Error from 'src/views/error';
 import './event.styl';
 
 export class Event extends Component {

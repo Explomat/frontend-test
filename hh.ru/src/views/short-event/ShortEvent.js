@@ -1,9 +1,9 @@
-import Component from '../Component';
-import Element from '../Element';
-import InputText from '../input-text';
-import Error from '../error';
-import tags from '../tags';
-import { parseDateFromString } from  '../../utils/date';
+import Component from 'src/lib/Component';
+import Element from 'src/lib/Element';
+import tags from 'src/lib/tags';
+import InputText from 'src/views/input-text';
+import Error from 'src/views/error';
+import { parseDateFromString } from  'src/utils/date';
 import './short-event.styl';
 
 export class ShortEvent extends Component {

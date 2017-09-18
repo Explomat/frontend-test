@@ -1,5 +1,5 @@
-import { render } from './views/render';
-import Calendar from './views/calendar';
+import { render } from './lib/render';
+import Calendar from './views/containers/calendar';
 //import Test from './views/Test';
 
 import 'babel-polyfill';
