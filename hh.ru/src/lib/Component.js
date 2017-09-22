@@ -1,4 +1,5 @@
 import { update } from './render';
+import shallowCompare from './shallowCompare';
 
 class Component {
 	constructor(props){
@@ -8,11 +9,15 @@ class Component {
 
 
 	setState(nextState){
-		this.state = {
+		/*this.state = {
 			...this.state,
 			...nextState
-		};
-		update(this.id);
+		};*/
+		update(this, nextState);
+	}
+
+	shouldComponentUpdate(nextProps, nextState){
+		return shallowCompare(this, nextProps, nextState);
 	}
 }
 

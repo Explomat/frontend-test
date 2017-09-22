@@ -10,10 +10,12 @@ let rootDomNode = null;
 const nodes = {};
 const components = {};
 
-export function update(id){
-	const obj = components[id];
+export function update(ctx, nextState){
+	const obj = components[ctx.id];
 	const parentDomNode = (obj.parent && obj.parent.domNode ? obj.parent.domNode : rootDomNode);
-	_renderTree(obj, parentDomNode);
+	console.time('test');
+	_renderTree(obj, parentDomNode, nextState);
+	console.timeEnd('test');
 }
 
 export function render({ type, props, parent, id }, container) {
@@ -29,6 +31,15 @@ function _removeNode(nodeId){
 	Object.keys(nodes).forEach(n => {
 		if (~n.indexOf(node.id)) {
 			delete nodes[n];
+		}
+	});
+	Object.keys(components).forEach(n => {
+		if (~n.indexOf(node.id)) {
+			if (node.key !== undefined && node.key !== null){
+				components[n]._isMounted = false;
+			} else {
+				delete components[n];
+			}
 		}
 	});
 }
@@ -70,7 +81,7 @@ function _clearNode(id){
 	}
 }
 
-function _renderTree({ key, type, props, parent, id }, parentDomNode) {
+function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState) {
 	let newId = null;
 	if (parent && typeof parent.type === 'function') {
 		newId = parent.id;
@@ -81,7 +92,6 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 			const lastIndex = oid.lastIndexOf('.');
 			oid = oid.substr(lastIndex + 1);
 		}
-		//oid[(oid.length - 1)];
 		const okey = key !== undefined && key !== null ? `$${key}` : '';
 		
 		const parentId = parent ? parent.id.toString() : '0';
@@ -110,6 +120,16 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 
 		obj.props = props;
 		obj.instance = Component;
+
+		const st = {
+			...Component.state,
+			...nextState
+		};
+		if (Component._isMounted && !Component.shouldComponentUpdate(props, st)){
+			return obj;
+		}
+
+		Component.state = st;
 		components[newId] = obj;
 
 		if (Component.componentWillMount && !isSameElement){
@@ -127,6 +147,7 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 				id: '0'
 			}, parentDomNode);
 			Component.domNode = child.domNode;
+			Component._isMounted = true;
 
 			if (Component.componentDidMount && !isSameElement){
 				Component.componentDidMount();
@@ -193,10 +214,12 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode) {
 							}
 						}
 						if (!isEqual){
-							if (key === undefined || key === null){
+							/*if (key === undefined || key === null){
 								const dataId = childDomNode.getAttribute('data-id');
 								_removeNode(dataId);
-							}
+							}*/
+							const dataId = childDomNode.getAttribute('data-id');
+							_removeNode(dataId);
 							obj.domNode.removeChild(childDomNode);
 						}
 					}

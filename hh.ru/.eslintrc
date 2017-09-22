@@ -90,7 +90,7 @@
         "no-proto": 2,
         "no-redeclare": 2,
         "no-script-url": 2,
-        "no-self-compare": 2,
+        "no-self-compare": 0,
         "no-sequences": 2,
         "no-unused-expressions": 2,
         "no-useless-call": 2,
