@@ -9,6 +9,7 @@ const EXCLUDED_PROPS = {
 let rootDomNode = null;
 const nodes = {};
 const components = {};
+const componentStates = {};
 
 export function update(ctx, nextState){
 	const obj = components[ctx.id];
@@ -16,6 +17,8 @@ export function update(ctx, nextState){
 	console.time('test');
 	_renderTree(obj, parentDomNode, nextState);
 	console.timeEnd('test');
+	console.log('componentStates:', componentStates);
+	console.log('components: ', components);
 }
 
 export function render({ type, props, parent, id }, container) {
@@ -36,10 +39,10 @@ function _removeNode(nodeId){
 	Object.keys(components).forEach(n => {
 		if (~n.indexOf(node.id)) {
 			if (node.key !== undefined && node.key !== null){
-				components[n]._isMounted = false;
-			} else {
-				delete components[n];
+				//components[n].instance._isMounted = false;
+				componentStates[n] = components[n].instance.state;
 			}
+			delete components[n];
 		}
 	});
 }
@@ -57,7 +60,7 @@ function _getComponentForNode(id){
 	return node && node.instance;
 }
 
-function _clearNode(id){
+/*function _clearNode(id){
 	const node = nodes[id];
 
 	if (node && node.domNode){
@@ -79,7 +82,7 @@ function _clearNode(id){
 			}
 		}
 	}
-}
+}*/
 
 function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState) {
 	let newId = null;
@@ -116,6 +119,7 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 		} else {
 			Component = new type(props);
 			Component.id = newId;
+			Component.state = componentStates.hasOwnProperty(newId) ? componentStates[newId] : Component.state;
 		}
 
 		obj.props = props;
@@ -125,19 +129,23 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 			...Component.state,
 			...nextState
 		};
-		if (Component._isMounted && !Component.shouldComponentUpdate(props, st)){
+		/*if (Component._isMounted && !Component.shouldComponentUpdate(props, st)){
 			return obj;
-		}
+		}*/
 
 		Component.state = st;
 		components[newId] = obj;
 
-		if (Component.componentWillMount && !isSameElement){
+		if (!Component._isMounted && Component.componentWillMount && !isSameElement){
 			Component.componentWillMount();
-			return;
 		}
 		
 		Component.props = props;
+
+		if (Component._isMounted && Component.componentWillReceiveProps && !nextState){
+			Component.componentWillReceiveProps(props);
+		}
+
 		const el = Component.render();
 
 		if (el){
@@ -155,14 +163,8 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 		}
 		return obj;
 	} else if (typeof type === 'string') {
-		if (nodes.hasOwnProperty(newId)){
-			if (nodes[newId].type === type) {
-				obj.domNode = nodes[newId].domNode;
-				_clearNode(newId);
-			} else {
-				obj.domNode = document.createElement(type);
-			}
-			//obj.domNode = nodes[newId].domNode;
+		if (nodes.hasOwnProperty(newId) && nodes[newId].type === type){
+			obj.domNode = nodes[newId].domNode;
 		} else {
 			obj.domNode = document.createElement(type);
 		}
@@ -214,10 +216,6 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 							}
 						}
 						if (!isEqual){
-							/*if (key === undefined || key === null){
-								const dataId = childDomNode.getAttribute('data-id');
-								_removeNode(dataId);
-							}*/
 							const dataId = childDomNode.getAttribute('data-id');
 							_removeNode(dataId);
 							obj.domNode.removeChild(childDomNode);

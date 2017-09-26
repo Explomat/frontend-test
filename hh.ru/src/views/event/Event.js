@@ -34,25 +34,33 @@ export class Event extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps){
+		this.setState({
+			event: nextProps.event,
+			participants: nextProps.participants,
+			description: nextProps.description
+		});
+	}
+
 	handleChangeEvent(e){
-		/*this.setState({
-			event: value
-		});*/
-		this.state.event = e.target.value;
+		this.setState({
+			event: e.target.value
+		});
+		//this.state.event = e.target.value;
 	}
 
 	handleChangeParticipants(e){
-		/*this.setState({
-			participants: value.split(',')
-		});*/
-		this.state.participants = e.target.value.split(',');
+		this.setState({
+			participants: e.target.value.split(',')
+		});
+		//this.state.participants = e.target.value.split(',');
 	}
 
 	handleChangeDescription(e){
-		/*this.setState({
-			description: value
-		});*/
-		this.state.description = e.target.value;
+		this.setState({
+			description: e.target.value
+		});
+		//this.state.description = e.target.value;
 	}
 
 	handleSave(){
@@ -119,8 +127,8 @@ export class Event extends Component {
 	}
 
 	render(){
-		const { error } = this.state;
-		const { isEdit, event, date, participants, description } = this.props;
+		const { error, event, participants, description } = this.state;
+		const { isEdit, date } = this.props;
 		const { top, left, isTopLeft, isTopRight, isBottomLeft, isBottomRight } = this.getPositionAndPointers();
 		const classes = this.props.isDisplay ? 'event--display' : '';
 		return (
