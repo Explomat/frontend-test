@@ -1,5 +1,6 @@
 import eventList from './eventList';
 import tags from './tags';
+import Node from './Node';
 
 const EXCLUDED_PROPS = {
 	children: true,
@@ -14,11 +15,7 @@ const componentStates = {};
 export function update(ctx, nextState){
 	const obj = components[ctx.id];
 	const parentDomNode = (obj.parent && obj.parent.domNode ? obj.parent.domNode : rootDomNode);
-	console.time('test');
 	_renderTree(obj, parentDomNode, nextState);
-	console.timeEnd('test');
-	console.log('componentStates:', componentStates);
-	console.log('components: ', components);
 }
 
 export function render({ type, props, parent, id }, container) {
@@ -26,7 +23,7 @@ export function render({ type, props, parent, id }, container) {
 	_renderTree({ type, props, parent, id }, container);
 }
 
-function _removeNode(nodeId){
+function removeNode(nodeId){
 	let node = nodes[nodeId];
 	if (node.parent && node.parent.instance){
 		node = node.parent;
@@ -39,50 +36,12 @@ function _removeNode(nodeId){
 	Object.keys(components).forEach(n => {
 		if (~n.indexOf(node.id)) {
 			if (node.key !== undefined && node.key !== null){
-				//components[n].instance._isMounted = false;
 				componentStates[n] = components[n].instance.state;
 			}
 			delete components[n];
 		}
 	});
 }
-
-function _getComponentForNode(id){
-	let node = nodes[id];
-	if (node &&
-		typeof node.type === 'string' &&
-		node.parent
-	) {
-		while (node.parent && typeof node.type !== 'function'){
-			node = node.parent;
-		}
-	}
-	return node && node.instance;
-}
-
-/*function _clearNode(id){
-	const node = nodes[id];
-
-	if (node && node.domNode){
-		if (node.domNode.hasAttributes()) {
-			const attrs = node.domNode.attributes;
-			for (let i = attrs.length - 1; i >= 0; i--) {
-				node.domNode.removeAttribute(attrs[i].name);
-			}
-		}
-
-		if (node.props) {
-			for (const p in node.props){
-				if (node.props.hasOwnProperty(p) &&
-					eventList.hasOwnProperty(p)
-				){
-					const ev = p.substr(2).toLowerCase();
-					node.domNode.removeEventListener(ev, node.props[p]);
-				}
-			}
-		}
-	}
-}*/
 
 function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState) {
 	let newId = null;
@@ -103,12 +62,7 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 		newId = `${pid}.${oid}${okey}`;
 	}
 
-	const obj = {
-		key,
-		id: newId,
-		type,
-		parent
-	};
+	const obj = new Node(key, newId, type, parent);
 	
 	if (typeof type === 'function'){
 		const isSameElement = components.hasOwnProperty(newId) && components[newId].type === type;
@@ -129,9 +83,6 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 			...Component.state,
 			...nextState
 		};
-		/*if (Component._isMounted && !Component.shouldComponentUpdate(props, st)){
-			return obj;
-		}*/
 
 		Component.state = st;
 		components[newId] = obj;
@@ -217,7 +168,7 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 						}
 						if (!isEqual){
 							const dataId = childDomNode.getAttribute('data-id');
-							_removeNode(dataId);
+							removeNode(dataId);
 							obj.domNode.removeChild(childDomNode);
 						}
 					}
@@ -243,7 +194,7 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 			}
 
 			if (props.ref){
-				const curComponent = _getComponentForNode(newId);
+				const curComponent = nodes[newId] && nodes[newId].getContainerInstance(); // getComponentForNode(newId);
 				if (curComponent){
 					curComponent.refs = curComponent.refs || {};
 					curComponent.refs[props.ref] = obj.domNode;
