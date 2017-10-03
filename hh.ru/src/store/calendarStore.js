@@ -25,9 +25,14 @@ register(function calendarStore(action){
 			break;
 		}
 		case constants.CALENDAR_GET_STATE_SUCCESS: {
+			const events = (action.state.events || []).reduce((f, s) => {
+				f[s.date] = s;
+				return f;
+			}, {});
 			state = {
 				...state,
 				...action.state,
+				events,
 				isFetching: false
 			};
 			emit('update', state);
@@ -57,7 +62,8 @@ register(function calendarStore(action){
 				...state,
 				events: {
 					...state.events,
-					[dateToString(action.date)]: {
+					[dateToString(ev.date)]: {
+						date: dateToString(ev.date),
 						event: ev.event || '',
 						description: ev.description || '',
 						participants: ev.participants || []

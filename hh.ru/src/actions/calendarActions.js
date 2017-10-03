@@ -1,64 +1,20 @@
 import constants from '../constants';
+import * as api from '../api';
 import { dispatch } from '../store/dispatcher';
+import { dateToString } from '../utils/date';
 
 export function getState(){
 	dispatch({ type: constants.CALENDAR_GET_STATE });
 	
-	setTimeout(() => {
+	api.getEvents().then(events => {
 		dispatch({
 			type: constants.CALENDAR_GET_STATE_SUCCESS,
 			state: {
 				curDate: new Date(),
-				events: {
-					'8/1/2017': {
-						event: 'test',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/3/2017': {
-						event: 'test1',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/5/2017': {
-						event: 'test222222222222222222222222222222',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/7/2017': {
-						event: 'test3',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/9/2017': {
-						event: 'test4',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/11/2017': {
-						event: 'test5',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/13/2017': {
-						event: 'test6',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/15/2017': {
-						event: 'test7',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					},
-					'8/17/2017': {
-						event: 'test8',
-						participants: ['Матвеев Савва', 'Габдуллин Дамир'],
-						description: 'description'
-					}
-				}
+				events
 			}
 		});
-	}, 300);
+	});
 }
 
 export function prevMonth(){
@@ -74,17 +30,26 @@ export function nextMonth(){
 }
 
 export function saveEvent(event, date){
-	dispatch({
-		type: constants.CALENDAR_SAVE_EVENT_SUCCESS,
-		event,
-		date
+	api.saveEvent({
+		...event,
+		date: dateToString(date)
+	}).then(() => {
+		dispatch({
+			type: constants.CALENDAR_SAVE_EVENT_SUCCESS,
+			event: {
+				...event,
+				date
+			}
+		});
 	});
 }
 
 export function deleteEvent(date){
-	dispatch({
-		type: constants.CALENDAR_DELETE_EVENT_SUCCESS,
-		date
+	api.deleteEvent(date).then(() => {
+		dispatch({
+			type: constants.CALENDAR_DELETE_EVENT_SUCCESS,
+			date
+		});
 	});
 }
 
