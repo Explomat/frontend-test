@@ -46,21 +46,18 @@ export class Event extends Component {
 		this.setState({
 			event: e.target.value
 		});
-		//this.state.event = e.target.value;
 	}
 
 	handleChangeParticipants(e){
 		this.setState({
 			participants: e.target.value.split(',')
 		});
-		//this.state.participants = e.target.value.split(',');
 	}
 
 	handleChangeDescription(e){
 		this.setState({
 			description: e.target.value
 		});
-		//this.state.description = e.target.value;
 	}
 
 	handleSave(){
@@ -160,7 +157,7 @@ export class Event extends Component {
 				tags.div({
 					class: 'event__body'
 				}, [
-					event && isEdit ?
+					this.props.event && isEdit ?
 						tags.strong(null, event)
 						: InputText({
 							value: event,
@@ -172,7 +169,7 @@ export class Event extends Component {
 					isEdit && tags.div({
 						class: 'event__date'
 					}, date.toLocaleString('ru', { month: 'long', day: 'numeric' })),
-					participants.length > 0 && isEdit ?
+					this.props.participants.length > 0 && isEdit ?
 						tags.div(null, [tags.div(null, 'Участники'), tags.div(null, participants.join(','))])
 						: InputText({
 							value: participants.join(','),
@@ -180,7 +177,7 @@ export class Event extends Component {
 							onChange: this.handleChangeParticipants
 						}
 					),
-					description && isEdit ?
+					this.props.description && isEdit ?
 						tags.div(null, description)
 						: InputTextArea({
 							value: description,

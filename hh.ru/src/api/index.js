@@ -14,7 +14,13 @@ export function saveEvent(event){
 	if (obj !== null){
 		events = JSON.parse(obj);
 	}
-	events.push(event);
+	const idx = events.findIndex(e => e.date === event.date);
+	if (~idx){
+		events[idx] = event;
+	} else {
+		events.push(event);
+	}
+	
 	storage.setItem('events', JSON.stringify(events));
 	return Promise.resolve();
 }
@@ -29,6 +35,6 @@ export function deleteEvent(date){
 	if (~idx){
 		events.splice(idx, 1);
 		storage.setItem('events', JSON.stringify(events));
-		return Promise.resolve();
 	}
+	return Promise.resolve();
 }
