@@ -121,14 +121,38 @@
 			padding: 8px;
 		}
 		.event__body {
-			padding: 15px;
-		    
-			.event__name {
-				margin-bottom: 4px;
+			padding: 0px 15px 15px 15px;
+			font-size: 14px;
+			
+			.event__name{
+				margin-bottom: 16px;
 			}
+			
+			.event__participants{
+				margin-bottom: 16px;
+			}
+			
+			.event__label-name{
+				font-size: 16px;
+			}
+		    
+			.event__date {
+				margin-top: 12px;
+    			margin-bottom: 12px;
+			}
+			
+			.event__members {
+				margin-bottom: 12px;
+				.event__members-label{
+					font-size: 12px;
+	    			color: #777;
+				}
+			}
+			
 
-		    .event__description {
-		    	margin-top: 32px;
+		    .event__label-description{
+		    	font-size: 12px;
+	    		color: #777;
 		    }
 		    
 		    .event__create-button {
@@ -137,6 +161,8 @@
 		}
 		.event__footer {
 			padding: 0px 15px 15px 15px;
+			position: absolute;
+			bottom: 0;
 		}
 	}
 }

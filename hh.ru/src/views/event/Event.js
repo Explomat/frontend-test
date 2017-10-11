@@ -158,7 +158,9 @@ export class Event extends Component {
 					class: 'event__body'
 				}, [
 					this.props.event && isEdit ?
-						tags.strong(null, event)
+						tags.strong({
+							class: 'event__label-name'
+						}, event)
 						: InputText({
 							value: event,
 							placeholder: 'Событие',
@@ -168,17 +170,34 @@ export class Event extends Component {
 					),
 					isEdit && tags.div({
 						class: 'event__date'
-					}, date.toLocaleString('ru', { month: 'long', day: 'numeric' })),
+					}, new Date(date).toLocaleString('ru', { month: 'long', day: 'numeric' })),
 					this.props.participants.length > 0 && isEdit ?
-						tags.div(null, [tags.div(null, 'Участники'), tags.div(null, participants.join(','))])
+						tags.div({
+							class: 'event__members'
+						}, [
+							tags.div({
+								class: 'event__members-label'
+							}, 'Участники'),
+							tags.div({
+								class: 'event__members-value'
+							}, participants.join(','))
+						])
 						: InputText({
 							value: participants.join(','),
 							placeholder: 'Участники',
+							className: 'event__participants',
 							onChange: this.handleChangeParticipants
 						}
 					),
 					this.props.description && isEdit ?
-						tags.div(null, description)
+						tags.div(null, [
+							tags.div({
+								class: 'event__label-description'
+							}, 'Описание'),
+							tags.div({
+								class: 'event__value-description'
+							}, description)
+						])
 						: InputTextArea({
 							value: description,
 							placeholder: 'Описание',
