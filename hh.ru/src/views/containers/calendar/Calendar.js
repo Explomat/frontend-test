@@ -37,6 +37,7 @@ export class Calendar extends Component {
 		super(props);
 
 		this.state = {
+			selectedCell: null,
 			curDate: new Date(),
 			curEvent: null,
 			isDisplayEvent: false,
@@ -95,6 +96,7 @@ export class Calendar extends Component {
 		const ev = events[dateToString(date)];
 
 		this.setState({
+			selectedCell: dateToString(date),
 			isDisplayEvent: true,
 			isDisplayShortEvent: false,
 			curEvent: {
@@ -187,14 +189,16 @@ export class Calendar extends Component {
 		const curDate = startWeekDayInPrevMonth;
 		const dateNow = new Date();
 
-		const { events } = this.state;
-		let ev;
+		const { selectedCell, events } = this.state;
+		let ev, d;
 		for (let i = 0; i < diffPrevDays; i++) {
-			ev = events[dateToString(curDate)];
+			d = dateToString(curDate);
+			ev = events[d];
 			cells.push(CalendarCell({
-				key: dateToString(curDate),
+				key: d,
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				isCurDate: equalDates(dateNow, curDate),
+				isSelected: d === selectedCell,
 				date: new Date(curDate),
 				event: ev,
 				onClick: this.handleDisplayEvent
@@ -202,14 +206,16 @@ export class Calendar extends Component {
 			curDate.setDate(curDate.getDate() + 1);
 		}
 		for (let i = diffPrevDays; i < 7; i++) {
-			ev = events[dateToString(curDate)];
+			d = dateToString(curDate);
+			ev = events[d];
 			cells.push(CalendarCell({
-				key: dateToString(curDate),
+				key: d,
 				title: `${getWeekDayName(curDate)}, ${curDate.getDate()}`,
 				date: new Date(curDate),
 				event: ev,
 				isCurMonth: true,
 				isCurDate: equalDates(dateNow, curDate),
+				isSelected: d === selectedCell,
 				onClick: this.handleDisplayEvent
 			}));
 			curDate.setDate(curDate.getDate() + 1);
@@ -223,14 +229,16 @@ export class Calendar extends Component {
 		for (let i = 1; i < 6; i++) {
 			cells = [];
 			for (let j = 0; j < 7; j++) {
-				ev = events[dateToString(curDate)];
+				d = dateToString(curDate);
+				ev = events[d];
 				cells.push(CalendarCell({
-					key: dateToString(curDate),
+					key: d,
 					title: curDate.getDate(),
 					date: new Date(curDate),
 					event: ev,
 					isCurDate: equalDates(dateNow, curDate),
 					isCurMonth: curDate <= lastDayInCurMonth,
+					isSelected: d === selectedCell,
 					onClick: this.handleDisplayEvent
 				}));
 				curDate.setDate(curDate.getDate() + 1);

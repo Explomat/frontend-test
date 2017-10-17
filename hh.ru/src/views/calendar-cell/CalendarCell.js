@@ -9,26 +9,18 @@ export class CalendarCell extends Component {
 	constructor(props){
 		super(props);
 
-		this.state = {
-			isSelected: false
-		};
-
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick(){
 		const rect = this.domNode.getBoundingClientRect();
-		this.setState({
-			isSelected: true
-		});
 		if (this.props.onClick){
 			this.props.onClick(rect, this.props.date);
 		}
 	}
 
 	render(){
-		const { isSelected } = this.state;
-		const { isCurDate, isCurMonth, title, event, date } = this.props;
+		const { isCurDate, isCurMonth, isSelected, title, event, date } = this.props;
 
 		let classes = isCurDate ? 'calendar-cell--cur-date ' : '';
 		classes += isSelected ? 'calendar-cell--selected ' : '';
