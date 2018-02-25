@@ -26,7 +26,6 @@ function shallowEqual(objA, objB) {
 		return false;
 	}
 
-	// Test for A's keys different from B.
 	for (let i = 0; i < keysA.length; i++) {
 		if (!objB.hasOwnProperty(keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
 			return false;

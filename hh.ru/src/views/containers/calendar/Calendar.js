@@ -115,13 +115,11 @@ export class Calendar extends Component {
 		saveEvent(event, date);
 	}
 
-	handleSaveShortEvent(eventName, date){
+	handleSaveShortEvent(event, date){
 		this.setState({
 			isDisplayShortEvent: false
 		});
-		saveEvent({
-			event: eventName
-		}, date);
+		saveEvent(event, date);
 	}
 
 	handleDeleteEvent(date){

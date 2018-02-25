@@ -1,4 +1,4 @@
-const events = {
+const eventList = {
 	'onInput': true,
 	'onBlur': true,
 	'onChange': true,
@@ -20,4 +20,4 @@ const events = {
 	'onUnload': true
 };
 
-export default events;
+export default eventList;

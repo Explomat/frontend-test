@@ -32,10 +32,10 @@ export class ShortEvent extends Component {
 				if (parsedDate) {
 					event = event.trim();
 					if (event){
-						this.props.onSave(
+						this.props.onSave({
 							event,
-							parsedDate
-						);
+							participants: []
+						}, parsedDate);
 					} else {
 						this.setState({
 							error: 'Не указано название мероприятия'

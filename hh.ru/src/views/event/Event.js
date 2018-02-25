@@ -214,7 +214,7 @@ export class Event extends Component {
 						class: 'event__create-button',
 						onClick: this.handleSave
 					}, 'Готово'),
-					tags.button({
+					isEdit && tags.button({
 						type: 'button',
 						class: 'event__delete-button',
 						onClick: this.handleDelete

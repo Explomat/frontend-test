@@ -71,6 +71,11 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 		if (isSameElement){
 			Component = components[newId].instance;
 		} else {
+			if (nodes[newId]) {
+				parentDomNode.removeChild(parentDomNode.querySelector("[data-id='" + newId + "']"));
+				removeNode(newId);
+			}
+
 			Component = new type(props);
 			Component.id = newId;
 			Component.state = componentStates.hasOwnProperty(newId) ? componentStates[newId] : Component.state;
@@ -114,9 +119,13 @@ function _renderTree({ key, type, props, parent, id }, parentDomNode, nextState)
 		}
 		return obj;
 	} else if (typeof type === 'string') {
-		if (nodes.hasOwnProperty(newId) && nodes[newId].type === type){
+		if (nodes[newId] && nodes[newId].type === type){
 			obj.domNode = nodes[newId].domNode;
 		} else {
+			if (nodes[newId]) {
+				parentDomNode.removeChild(parentDomNode.querySelector("[data-id='" + newId + "']"));
+				removeNode(newId);
+			}
 			obj.domNode = document.createElement(type);
 		}
 		nodes[newId] = obj;
