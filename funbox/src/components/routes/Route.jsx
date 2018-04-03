@@ -68,7 +68,7 @@ class Route extends Component {
 	}
 
 	render(){
-		const { connectDragSource, connectDropTarget, properties, isDragging } = this.props;
+		const { connectDragSource, connectDropTarget, name, description, isDragging } = this.props;
 		const routesClasses = cx({
 			'route': true,
 			'route--not-visible': isDragging
@@ -76,8 +76,8 @@ class Route extends Component {
 
 		return connectDragSource(connectDropTarget(
 			<div className={routesClasses}>
-				<div className='route__name'>{properties.name}</div>
-				<div className='route__description'>{properties.description}</div>
+				<div className='route__name'>{name}</div>
+				<div className='route__description'>{description}</div>
 				<button type='button' className='close-button' onClick={this.handleRemove}>&times;</button>
 			</div>
 		));

@@ -58,10 +58,11 @@ class Map extends Component {
 		const notRemovedRoutes = routes.items.filter(r => !r.isRemoved);
 
 		notRemovedRoutes.forEach((r, index) => {
-			const pm = new ymaps.Placemark(r.geometry.coordinates, {
+			const coords = r.Point.pos.split(' ');
+			const pm = new ymaps.Placemark(coords, {
 				iconContent: index + 1,
-				balloonContentHeader: r.properties.name,
-				balloonContentBody: r.properties.description
+				balloonContentHeader: r.name,
+				balloonContentBody: r.description
 			}, {
 				draggable: true,
 				preset: 'islands#yellowStretchyIcon'
@@ -75,7 +76,8 @@ class Map extends Component {
 		});
 
 		const coordinates = notRemovedRoutes.reduce((f, s) => {
-			return f.concat([ s.geometry.coordinates ]);
+			const coords = s.Point.pos.split(' ');
+			return f.concat([ coords ]);
 		}, []);
 
 		if (coordinates.length <= 1){

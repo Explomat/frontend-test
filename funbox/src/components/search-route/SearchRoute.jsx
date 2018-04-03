@@ -113,7 +113,7 @@ class SearchRoute extends Component {
 					onKeyDown={this.handleKeyDown}
 					onClick={this.handleClick}
 				/>
-				{isDisplayItems && geoData.features.length > 0 &&
+				{isDisplayItems && geoData.length > 0 &&
 				<div className='search-route__items'>
 					<div
 						ref={items => {
@@ -121,7 +121,7 @@ class SearchRoute extends Component {
 						}}
 						className='search-route__content'
 					>
-						{geoData.features.map((fp, index) => {
+						{geoData.map((fp, index) => {
 							return <FeatureRoute key={index} {...fp} onClick={this.handleSelect}/>;
 						})}
 					</div>
@@ -133,33 +133,7 @@ class SearchRoute extends Component {
 
 SearchRoute.propTypes = {
 	searchValue: PropTypes.string.isRequired,
-	geoData: PropTypes.shape({
-		type: PropTypes.string.isRequired,
-		properties: PropTypes.shape({
-			ResponseMetaData: PropTypes.shape({
-				SearchRequest: PropTypes.shape({
-					request: PropTypes.string.isRequired,
-					results: PropTypes.string.number,
-					skip: PropTypes.string.number,
-					boundedBy: PropTypes.arrayOf(PropTypes.array)
-				}).isRequired
-			}).isRequired,
-			SearchResponse: PropTypes.shape({
-				found: PropTypes.number.isRequired,
-				Point: PropTypes.shape({
-					type: PropTypes.string.isRequired,
-					coordinates: PropTypes.array.isRequired
-				}),
-				boundedBy: PropTypes.arrayOf(
-					PropTypes.arrayOf(
-						PropTypes.number
-					)
-				),
-				display: PropTypes.string.isRequired
-			})
-		}),
-		features: PropTypes.arrayOf(PropTypes.object).isRequired
-	}).isRequired,
+	geoData: PropTypes.arrayOf(PropTypes.object).isRequired,
 	onSearch: PropTypes.func,
 	changeSearchValue: PropTypes.func,
 	onSelect: PropTypes.func

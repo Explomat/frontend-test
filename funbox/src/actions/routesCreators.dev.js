@@ -35,19 +35,19 @@ export function dragPlacemark(coordinates, index){
 		dispatch({ type: constants.MAPS_DRAG_PLACEMARK });
 
 		ymaps.geocode(coordinates, {
-			//json: true,
+			json: true,
 			results: 1
 		})
 		.then(geoData => {
-			if (geoData.status !== 'error'){
-				const collection = geoData.GeoObjectCollection.featureMember;
-				if (collection.length > 0){
-					dispatch({
-						type: constants.MAPS_DRAG_PLACEMARK_SUCCESS,
-						index,
-						geoObject: collection[0]
-					});
-				}	
+			const collection = geoData.GeoObjectCollection.featureMember;
+			if (collection.length > 0){
+				dispatch({
+					type: constants.MAPS_DRAG_PLACEMARK_SUCCESS,
+					index,
+					geoObject: {
+						...collection[0].GeoObject
+					}
+				});
 			}
 		})
 		.catch(err => {

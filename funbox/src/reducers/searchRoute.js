@@ -2,10 +2,7 @@ import constants from '../constants';
 
 export default function searchRoute(state = {
 	searchValue: '',
-	geoData: {
-		type: 'FeatureCollection',
-		features: []
-	}
+	geoData: []
 }, action) {
 	switch (action.type) {
 		case constants.MAPS_CHANGE_SEARCH_VALUE: 
@@ -18,6 +15,12 @@ export default function searchRoute(state = {
 				...state,
 				geoData: action.geoData
 			};
+		case constants.MAPS_ADD_NEW_ROUTE: {
+			return {
+				...state,
+				searchValue: ''
+			};
+		}
 		
 		default:
 			return state;

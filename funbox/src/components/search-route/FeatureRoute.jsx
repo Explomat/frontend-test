@@ -35,44 +35,69 @@ class FeatureRoute extends Component {
 	}	
 
 	render(){
-		const { properties } = this.props;
+		const { id, name, description } = this.props;
 		return (
 			<div
 				ref='point'
-				tabIndex={properties.id}
+				tabIndex={id}
 				className='point'
 				onKeyDown={this.handleKeyDown}
 				onClick={this.handleClick}
 			>
-				<div className='point__name'>{properties.name}</div>
-				<div className='point__description'>{properties.description}</div>
+				<div className='point__name'>{name}</div>
+				<div className='point__description'>{description}</div>
 			</div>
 		);
 	}
 }
 
 FeatureRoute.propTypes = {
-	type: PropTypes.string.isRequired,
-	properties: PropTypes.shape({
+	metaDataProperty: PropTypes.shape({
 		GeocoderMetaData: PropTypes.shape({
-			kind: PropTypes.string.isRequired,
-			text: PropTypes.string.isRequired,
-			precision: PropTypes.string.isRequired
-		}),
-		id: PropTypes.string,
-		description: PropTypes.string,
-		name: PropTypes.string,
-		boundedBy: PropTypes.arrayOf(
-			PropTypes.arrayOf(
-				PropTypes.number
-			)
-		)
-	}).isRequired,
-	geometry: PropTypes.shape({
-		type: PropTypes.string.isRequired,
-		coordinates: PropTypes.arrayOf(PropTypes.number).isRequired
-	}).isRequired,
-	geometries: PropTypes.arrayOf(PropTypes.object)
+			kind: PropTypes.string,
+			text: PropTypes.string,
+			precision: PropTypes.string,
+			Address: PropTypes.shape({
+				country_code: PropTypes.string,
+				formatted: PropTypes.string
+			}),
+			Components: PropTypes.arrayOf(
+				PropTypes.shape({
+					kind: PropTypes.string,
+					name: PropTypes.string
+				})
+			),
+			AddressDetails: PropTypes.shape({
+				Country: PropTypes.shape({
+					AddressLine: PropTypes.string,
+					CountryNameCode: PropTypes.string,
+					CountryName: PropTypes.string,
+					Locality: PropTypes.shape({
+						LocalityName: PropTypes.string,
+						Premise: PropTypes.shape({
+							PremiseName: PropTypes.string
+						})
+					})
+				})
+			})
+		})
+	}),
+	description: PropTypes.string,
+	name: PropTypes.string,
+	boundedBy: PropTypes.shape({
+		Envelope: PropTypes.shape({
+			lowerCorner: PropTypes.string,
+			upperCorner: PropTypes.string
+		})
+	}),
+	Point: PropTypes.shape({
+		pos: PropTypes.string
+	}),
+	uriMetaData: PropTypes.shape({
+		URI: PropTypes.shape({
+			uri: PropTypes.string
+		})
+	})
 };
 
 export default FeatureRoute;
