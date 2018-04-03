@@ -1,0 +1,40 @@
+.routes {
+	display: inline-block;
+    width: 384px;
+	
+	.route {
+		border: 1px dashed gray;
+		padding: 8px 25px 8px 8px;
+		margin-bottom: 8px;
+		outline: 0;
+		white-space: nowrap;
+		cursor: move;
+		position: relative;
+		
+		.close-button {
+			position: absolute;
+		    top: 50%;
+		    right: 8px;
+		    transform: translateY(-50%);
+		}
+
+		&--not-visible{
+			opacity: 0;
+		}
+
+		&__name {
+			font-weight: 700;
+			font-size: 14px;
+			overflow: hidden;
+			position: relative;
+			text-overflow: ellipsis;
+		}	
+		&__description {
+			font-size: 11px;
+			color: #6b6b6b;
+			overflow: hidden;
+			position: relative;
+			text-overflow: ellipsis;
+		}
+	}
+}
